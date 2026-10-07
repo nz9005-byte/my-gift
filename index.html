@@ -1,15 +1,498 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Our Little Story</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>For You</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400&display=swap');
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background: #080808;
+            color: #f4f1eb;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+        }
+
+        /* --------------------
+           STAR BACKGROUND
+        -------------------- */
+
+        .sky {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 50% 45%, #171717 0%, #0b0b0b 45%, #050505 100%);
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #f4f1eb;
+            border-radius: 50%;
+            opacity: 0.45;
+            animation: twinkle 4s infinite ease-in-out;
+        }
+
+        .star:nth-child(1)  { top: 12%; left: 15%; animation-delay: 0s; }
+        .star:nth-child(2)  { top: 23%; left: 72%; animation-delay: 1s; }
+        .star:nth-child(3)  { top: 68%; left: 12%; animation-delay: 2s; }
+        .star:nth-child(4)  { top: 78%; left: 81%; animation-delay: 0.5s; }
+        .star:nth-child(5)  { top: 38%; left: 88%; animation-delay: 1.5s; }
+        .star:nth-child(6)  { top: 84%; left: 40%; animation-delay: 2.5s; }
+        .star:nth-child(7)  { top: 15%; left: 45%; animation-delay: 3s; }
+        .star:nth-child(8)  { top: 55%; left: 92%; animation-delay: 1.2s; }
+        .star:nth-child(9)  { top: 30%; left: 30%; animation-delay: 2.2s; }
+        .star:nth-child(10) { top: 72%; left: 63%; animation-delay: 0.8s; }
+        .star:nth-child(11) { top: 48%; left: 6%; animation-delay: 1.8s; }
+        .star:nth-child(12) { top: 8%; left: 87%; animation-delay: 2.8s; }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.2;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.5);
+            }
+        }
+
+        /* --------------------
+           OPENING SCREEN
+        -------------------- */
+
+        .screen {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+            transition: opacity 1.2s ease, visibility 1.2s ease;
+        }
+
+        .opening {
+            z-index: 10;
+        }
+
+        .opening.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .opening-content {
+            max-width: 650px;
+            animation: appear 2s ease forwards;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(48px, 9vw, 82px);
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            margin: 0 0 25px;
+        }
+
+        .opening-text {
+            font-size: 15px;
+            line-height: 1.9;
+            color: #c9c5bd;
+            margin-bottom: 42px;
+        }
+
+        .begin {
+            background: transparent;
+            border: 1px solid #77736c;
+            color: #f4f1eb;
+            padding: 13px 28px;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .begin:hover {
+            background: #f4f1eb;
+            color: #080808;
+            border-color: #f4f1eb;
+        }
+
+        /* --------------------
+           CONSTELLATION SCREEN
+        -------------------- */
+
+        .constellation {
+            z-index: 5;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 1.5s ease, visibility 1.5s ease;
+        }
+
+        .constellation.visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .constellation-content {
+            position: relative;
+            width: min(800px, 90vw);
+            height: min(650px, 82vh);
+        }
+
+        .menu-title {
+            position: absolute;
+            top: 3%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 100%;
+        }
+
+        .menu-title h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: 32px;
+            margin: 0;
+        }
+
+        .menu-title p {
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #85817a;
+            margin-top: 8px;
+        }
+
+        /* --------------------
+           MOON
+        -------------------- */
+
+        .moon {
+            position: absolute;
+            width: 125px;
+            height: 125px;
+            border-radius: 50%;
+            background: #f1eee7;
+            box-shadow:
+                0 0 35px rgba(244, 241, 235, 0.12),
+                0 0 80px rgba(244, 241, 235, 0.05);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: transform 0.6s ease, box-shadow 0.6s ease;
+        }
+
+        .moon:hover {
+            transform: translate(-50%, -50%) scale(1.06);
+            box-shadow:
+                0 0 45px rgba(244, 241, 235, 0.2),
+                0 0 100px rgba(244, 241, 235, 0.08);
+        }
+
+        /* --------------------
+           CLICKABLE STARS
+        -------------------- */
+
+        .menu-star {
+            position: absolute;
+            width: 42px;
+            height: 42px;
+            border: none;
+            background: transparent;
+            color: #f4f1eb;
+            cursor: pointer;
+            font-size: 25px;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .menu-star:hover {
+            transform: scale(1.3);
+        }
+
+        .menu-star span {
+            display: block;
+            font-size: 25px;
+        }
+
+        .star-label {
+            position: absolute;
+            white-space: nowrap;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 15px;
+            color: #aaa69f;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .menu-star:hover .star-label {
+            opacity: 1;
+        }
+
+        /* Star positions */
+
+        .s1 {
+            top: 25%;
+            left: 15%;
+        }
+
+        .s2 {
+            top: 19%;
+            right: 17%;
+        }
+
+        .s3 {
+            top: 50%;
+            left: 7%;
+        }
+
+        .s4 {
+            top: 59%;
+            right: 8%;
+        }
+
+        .s5 {
+            bottom: 13%;
+            left: 23%;
+        }
+
+        .s6 {
+            bottom: 10%;
+            right: 24%;
+        }
+
+        /* --------------------
+           MOBILE
+        -------------------- */
+
+        @media (max-width: 600px) {
+
+            .opening-text {
+                font-size: 14px;
+            }
+
+            .constellation-content {
+                width: 95vw;
+                height: 80vh;
+            }
+
+            .moon {
+                width: 105px;
+                height: 105px;
+            }
+
+            .menu-title h2 {
+                font-size: 27px;
+            }
+
+            .menu-star {
+                font-size: 21px;
+            }
+
+            .star-label {
+                display: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>You found it.</h1>
+    <!-- BACKGROUND -->
+    <div class="sky">
 
-    <p>I wasn't sure how to say this normally,<br>
-    so I made you this instead.</p>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+
+    </div>
+
+
+    <!-- OPENING -->
+    <section class="screen opening" id="opening">
+
+        <div class="opening-content">
+
+            <h1>You found it.</h1>
+
+            <p class="opening-text">
+                I wasn't really sure how to say all of this normally,<br>
+                so I decided to make you something instead.<br><br>
+
+                It's probably a little unnecessary.<br>
+                But I wanted you to have it.
+            </p>
+
+            <button class="begin" onclick="beginStory()">
+                Begin
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONSTELLATION -->
+    <section class="screen constellation" id="constellation">
+
+        <div class="constellation-content">
+
+            <div class="menu-title">
+
+                <h2>A few things I wanted you to know.</h2>
+
+                <p>Choose a star.</p>
+
+            </div>
+
+
+            <!-- STAR 1 -->
+
+            <button class="menu-star s1">
+
+                <span>✦</span>
+
+                <div class="star-label">
+                    How this started
+                </div>
+
+            </button>
+
+
+            <!-- STAR 2 -->
+
+            <button class="menu-star s2">
+
+                <span>✦</span>
+
+                <div class="star-label">
+                    Things I noticed
+                </div>
+
+            </button>
+
+
+            <!-- STAR 3 -->
+
+            <button class="menu-star s3">
+
+                <span>✦</span>
+
+                <div class="star-label">
+                    Things that make me smile
+                </div>
+
+            </button>
+
+
+            <!-- STAR 4 -->
+
+            <button class="menu-star s4">
+
+                <span>✦</span>
+
+                <div class="star-label">
+                    Things I like about you
+                </div>
+
+            </button>
+
+
+            <!-- STAR 5 -->
+
+            <button class="menu-star s5">
+
+                <span>✦</span>
+
+                <div class="star-label">
+                    Things I'd never admit
+                </div>
+
+            </button>
+
+
+            <!-- STAR 6 -->
+
+            <button class="menu-star s6">
+
+                <span>✦</span>
+
+                <div class="star-label">
+                    Things I want to do with you
+                </div>
+
+            </button>
+
+
+            <!-- MOON -->
+
+            <div class="moon" title="The last one."></div>
+
+        </div>
+
+    </section>
+
+
+    <script>
+
+        function beginStory() {
+
+            document.getElementById("opening").classList.add("hidden");
+
+            setTimeout(function() {
+
+                document.getElementById("constellation").classList.add("visible");
+
+            }, 700);
+
+        }
+
+    </script>
 
 </body>
 </html>
