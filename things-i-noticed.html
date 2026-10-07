@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Things I Noticed</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #050505;
+            color: #f5f5f5;
+            font-family: Georgia, serif;
+            overflow: hidden;
+        }
+
+        /* =========================
+           MAIN PAGE
+           ========================= */
+
+        .page {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* =========================
+           TITLE
+           ========================= */
+
+        .title-screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: opacity 1.5s ease;
+            z-index: 5;
+        }
+
+        .title-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .title {
+            font-size: clamp(38px, 7vw, 72px);
+            font-weight: normal;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            max-width: 600px;
+            padding: 0 30px;
+            font-size: 17px;
+            line-height: 1.8;
+            color: #cfcfcf;
+        }
+
+        .start-star {
+            margin-top: 45px;
+            font-size: 34px;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: transform 0.4s ease, text-shadow 0.4s ease;
+        }
+
+        .start-star:hover {
+            transform: scale(1.3);
+            text-shadow: 0 0 20px white;
+        }
+
+        /* =========================
+           STAR FIELD
+           ========================= */
+
+        .star-field {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 2s ease;
+        }
+
+        .star-field.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .star {
+            position: absolute;
+            border: none;
+            background: none;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            transition:
+                transform 0.5s ease,
+                text-shadow 0.5s ease,
+                opacity 0.5s ease;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        .star:hover {
+            transform: scale(1.5);
+            text-shadow: 0 0 20px white;
+        }
+
+        .star.clicked {
+            text-shadow: 0 0 25px white;
+            transform: scale(1.4);
+        }
+
+        @keyframes twinkle {
+
+            0%, 100% {
+                opacity: 0.45;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+        }
+
+        /* =========================
+           STAR POSITIONS
+           Change these if you want
+           ========================= */
+
+        .star1 {
+            top: 18%;
+            left: 23%;
+        }
+
+        .star2 {
+            top: 30%;
+            right: 20%;
+        }
+
+        .star3 {
+            top: 52%;
+            left: 13%;
+        }
+
+        .star4 {
+            top: 68%;
+            right: 27%;
+        }
+
+        .star5 {
+            top: 45%;
+            left: 48%;
+        }
+
+        .star6 {
+            top: 20%;
+            right: 43%;
+        }
+
+        .star7 {
+            bottom: 14%;
+            left: 38%;
+        }
+
+        .star8 {
+            bottom: 25%;
+            right: 10%;
+        }
+
+        /* =========================
+           OBSERVATION BOX
+           ========================= */
+
+        .observation {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+
+            width: min(600px, 80%);
+            padding: 35px;
+
+            text-align: center;
+
+            background: rgba(5, 5, 5, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+
+            opacity: 0;
+            pointer-events: none;
+
+            transition:
+                opacity 0.8s ease,
+                transform 0.8s ease;
+
+            z-index: 10;
+        }
+
+        .observation.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%);
+        }
+
+        .observation-title {
+            font-size: 22px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .observation-text {
+            font-size: 17px;
+            line-height: 1.9;
+            color: #dddddd;
+        }
+
+        .close-star {
+            margin-top: 25px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* =========================
+           FINAL MESSAGE
+           ========================= */
+
+        .final-message {
+            position: absolute;
+            inset: 0;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            opacity: 0;
+            pointer-events: none;
+
+            transition: opacity 2s ease;
+
+            z-index: 20;
+        }
+
+        .final-message.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .final-message h2 {
+            font-size: clamp(28px, 5vw, 50px);
+            font-weight: normal;
+            margin-bottom: 25px;
+        }
+
+        .final-message p {
+            max-width: 600px;
+            padding: 0 30px;
+            line-height: 2;
+            color: #d8d8d8;
+            font-size: 17px;
+        }
+
+        .next-star {
+            margin-top: 35px;
+            font-size: 30px;
+            color: white;
+            text-decoration: none;
+            transition: 0.4s ease;
+        }
+
+        .next-star:hover {
+            transform: scale(1.4);
+            text-shadow: 0 0 20px white;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- =========================================
+         TITLE SCREEN
+         EDIT THE TEXT BELOW
+         ========================================= -->
+
+    <div class="title-screen" id="titleScreen">
+
+        <div class="title">
+            Things I Noticed
+        </div>
+
+        <div class="subtitle">
+
+            <!-- EDIT THIS -->
+            Some things are easy to notice.
+            Some take a little longer.
+            I wanna acheive both my love.
+
+        </div>
+
+        <button class="start-star" onclick="startPage()">
+            ✦
+        </button>
+
+    </div>
+
+
+    <!-- =========================================
+         STAR FIELD
+         ========================================= -->
+
+    <div class="star-field" id="starField">
+
+
+        <!-- STAR 1 -->
+
+        <button class="star star1"
+                onclick="showObservation(1)">
+            ✦
+        </button>
+
+
+        <!-- STAR 2 -->
+
+        <button class="star star2"
+                onclick="showObservation(2)">
+            ✦
+        </button>
+
+
+        <!-- STAR 3 -->
+
+        <button class="star star3"
+                onclick="showObservation(3)">
+            ✦
+        </button>
+
+
+        <!-- STAR 4 -->
+
+        <button class="star star4"
+                onclick="showObservation(4)">
+            ✦
+        </button>
+
+
+        <!-- STAR 5 -->
+
+        <button class="star star5"
+                onclick="showObservation(5)">
+            ✦
+        </button>
+
+
+        <!-- STAR 6 -->
+
+        <button class="star star6"
+                onclick="showObservation(6)">
+            ✦
+        </button>
+
+
+        <!-- STAR 7 -->
+
+        <button class="star star7"
+                onclick="showObservation(7)">
+            ✦
+        </button>
+
+
+        <!-- STAR 8 -->
+
+        <button class="star star8"
+                onclick="showObservation(8)">
+            ✦
+        </button>
+
+
+    </div>
+
+
+    <!-- =========================================
+         OBSERVATION POPUP
+
+         The JavaScript below changes this text
+         depending on which star you click.
+         ========================================= -->
+
+    <div class="observation" id="observation">
+
+        <div class="observation-title" id="observationTitle">
+            <!-- JavaScript puts the title here -->
+        </div>
+
+        <div class="observation-text" id="observationText">
+            <!-- JavaScript puts the text here -->
+        </div>
+
+        <button class="close-star" onclick="closeObservation()">
+            ✦
+        </button>
+
+    </div>
+
+
+    <!-- =========================================
+         FINAL MESSAGE
+         EDIT THIS TEXT
+         ========================================= -->
+
+    <div class="final-message" id="finalMessage">
+
+        <h2>
+            I guess I notice a lot about you.
+        </h2>
+
+        <p>
+
+            <!-- EDIT THIS -->
+            More than I probably should.
+
+            <br><br>
+
+            <!-- EDIT THIS -->
+            But I think that's what happens
+            when someone starts becoming
+            important to you.
+
+        </p>
+
+        <!--
+        EDIT THE FILE NAME IF YOUR NEXT PAGE
+        HAS A DIFFERENT NAME
+        -->
+
+        <a class="next-star" href="next.html">
+            ✦
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* =========================================
+       EDIT YOUR OBSERVATIONS HERE
+       =========================================
+
+       You can change ANYTHING inside the
+       quotation marks.
+
+       Don't change the numbers.
+    */
+
+
+    const observations = {
+
+        1: {
+            title: "The way you laugh",
+            text: "I don't know why, but I always notice it."
+        },
+
+        2: {
+            title: "The way you tease me",
+            text: "You somehow manage to annoy me and make me smile at the same time. The way you fluster me just always get me riled up despite how much I LOVE it"
+        },
+
+        3: {
+            title: "Your little expressions",
+            text: "Especially the ones you probably don't even realize you're making."
+        },
+
+        4: {
+            title: "The little things you remember",
+            text: "You probably don't think they're important. I do."
+        },
+
+        5: {
+            title: "The way you make me feel comfortable",
+            text: "I don't think I ever told you that."
+        },
+
+        6: {
+            title: "The way you make me laugh",
+            text: "Even when I really don't feel like laughing."
+        },
+
+        7: {
+            title: "The little pieces of you",
+            text: "Somehow, I started remembering them without even trying."
+        },
+
+        8: {
+            title: "Something I probably shouldn't admit",
+            text: "I notice a lot more about you than you probably realize."
+        }
+
+    };
+
+
+    /* =========================================
+       DON'T CHANGE BELOW HERE
+       UNLESS YOU WANT TO MODIFY THE CODE
+       ========================================= */
+
+
+    let clickedStars = new Set();
+
+    const totalStars = 8;
+
+
+    function startPage() {
+
+        document
+            .getElementById("titleScreen")
+            .classList.add("hidden");
+
+        document
+            .getElementById("starField")
+            .classList.add("visible");
+
+    }
+
+
+    function showObservation(number) {
+
+        const observation = observations[number];
+
+        document
+            .getElementById("observationTitle")
+            .textContent = observation.title;
+
+        document
+            .getElementById("observationText")
+            .textContent = observation.text;
+
+        document
+            .getElementById("observation")
+            .classList.add("visible");
+
+
+        clickedStars.add(number);
+
+
+        document
+            .querySelector(".star" + number)
+            .classList.add("clicked");
+
+    }
+
+
+    function closeObservation() {
+
+        document
+            .getElementById("observation")
+            .classList.remove("visible");
+
+
+        if (clickedStars.size === totalStars) {
+
+            setTimeout(() => {
+
+                document
+                    .getElementById("starField")
+                    .classList.remove("visible");
+
+                document
+                    .getElementById("finalMessage")
+                    .classList.add("visible");
+
+            }, 700);
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>
