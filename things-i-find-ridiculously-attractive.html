@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attractiveness Report</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #000;
+    color: #fff;
+    font-family: Georgia, "Times New Roman", serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.screen {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* ================================
+   WARNING SCREEN
+================================ */
+
+#warningScreen {
+    text-align: center;
+    animation: fadeIn 1.5s ease;
+}
+
+.warning {
+    font-family: Arial, sans-serif;
+    letter-spacing: 4px;
+    font-size: 14px;
+    margin-bottom: 35px;
+}
+
+.warning-title {
+    font-size: 42px;
+    letter-spacing: 5px;
+    margin-bottom: 25px;
+}
+
+.warning-text {
+    max-width: 500px;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #ccc;
+}
+
+.warning-small {
+    margin-top: 25px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #777;
+}
+
+.warning-star {
+    margin-top: 45px;
+    font-size: 45px;
+    cursor: pointer;
+    transition: 0.4s ease;
+    display: inline-block;
+}
+
+.warning-star:hover {
+    transform: scale(1.3) rotate(15deg);
+    text-shadow: 0 0 20px white;
+}
+
+
+/* ================================
+   REPORT
+================================ */
+
+#reportScreen {
+    display: none;
+    padding: 50px 25px;
+}
+
+.report {
+    width: 100%;
+    max-width: 700px;
+    border: 1px solid #555;
+    padding: 40px;
+    position: relative;
+}
+
+.report::before {
+    content: "CLASSIFIED";
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #777;
+}
+
+.report-header {
+    border-bottom: 1px solid #555;
+    padding-bottom: 25px;
+    margin-bottom: 30px;
+}
+
+.report-title {
+    font-family: Arial, sans-serif;
+    font-size: 25px;
+    letter-spacing: 5px;
+    margin-bottom: 20px;
+}
+
+.report-line {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin: 9px 0;
+    color: #ccc;
+}
+
+.report-line span {
+    color: white;
+}
+
+.investigation {
+    text-align: center;
+    margin-top: 45px;
+}
+
+.investigation-text {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+.begin-button {
+    border: 1px solid white;
+    background: transparent;
+    color: white;
+    padding: 13px 25px;
+    font-family: Arial, sans-serif;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.begin-button:hover {
+    background: white;
+    color: black;
+}
+
+
+/* ================================
+   EVIDENCE SCREEN
+================================ */
+
+#evidenceScreen {
+    display: none;
+    padding: 40px 20px;
+}
+
+.evidence-container {
+    width: 100%;
+    max-width: 650px;
+}
+
+.evidence-counter {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #777;
+    margin-bottom: 35px;
+}
+
+.evidence-card {
+    border: 1px solid #555;
+    padding: 35px;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    animation: cardIn 0.7s ease;
+}
+
+.evidence-number {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #777;
+    margin-bottom: 30px;
+}
+
+.evidence-title {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.evidence-text {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #ccc;
+    min-height: 60px;
+}
+
+.reveal-button,
+.next-button {
+    margin-top: 35px;
+    align-self: center;
+    background: transparent;
+    border: 1px solid #777;
+    color: white;
+    padding: 12px 22px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    transition: 0.3s;
+}
+
+.reveal-button:hover,
+.next-button:hover {
+    border-color: white;
+    background: white;
+    color: black;
+}
+
+
+/* ================================
+   FINAL ANALYSIS
+================================ */
+
+#analysisScreen {
+    display: none;
+    padding: 40px 20px;
+}
+
+.analysis {
+    width: 100%;
+    max-width: 650px;
+    text-align: center;
+}
+
+.analysis-title {
+    font-family: Arial, sans-serif;
+    letter-spacing: 5px;
+    font-size: 14px;
+    margin-bottom: 45px;
+}
+
+.stat {
+    text-align: left;
+    margin: 28px 0;
+}
+
+.stat-label {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.bar {
+    height: 10px;
+    border: 1px solid #555;
+    padding: 2px;
+}
+
+.bar-fill {
+    height: 100%;
+    background: white;
+}
+
+.analysis-conclusion {
+    margin-top: 60px;
+    font-size: 20px;
+    line-height: 1.7;
+}
+
+.case-closed {
+    margin-top: 25px;
+    font-size: 34px;
+}
+
+
+/* ================================
+   FINAL MESSAGE
+================================ */
+
+#finalScreen {
+    display: none;
+    text-align: center;
+    padding: 30px;
+}
+
+.final-small {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #777;
+    margin-bottom: 30px;
+}
+
+.final-title {
+    font-size: 38px;
+    margin-bottom: 30px;
+}
+
+.final-text {
+    max-width: 550px;
+    margin: auto;
+    font-size: 19px;
+    line-height: 2;
+    color: #ddd;
+}
+
+.final-star {
+    display: inline-block;
+    margin-top: 50px;
+    font-size: 42px;
+    color: white;
+    text-decoration: none;
+    transition: 0.4s;
+}
+
+.final-star:hover {
+    transform: scale(1.3);
+    text-shadow: 0 0 25px white;
+}
+
+
+/* ================================
+   ANIMATIONS
+================================ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes cardIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     EDITABLE TEXT
+     
+     MOST OF THE WORDING YOU WANT TO CHANGE IS HERE.
+     ===================================================== -->
+
+<script>
+
+const editableText = {
+
+    warningTitle: "⚠ WARNING ⚠",
+
+    warningMain:
+        "You are about to access information that I probably should not be telling you.",
+
+    warningSmall:
+        "Proceed at your own risk.",
+
+
+    subjectName:
+        "HIM",
+
+    status:
+        "RIDICULOUSLY ATTRACTIVE",
+
+    severity:
+        "CONCERNING",
+
+    evidenceStatus:
+        "ABUNDANT",
+
+
+    evidence: [
+
+        {
+            title: "Your smile.",
+            text: "It's genuinely unfair."
+        },
+
+        {
+            title: "Your eyes.",
+            text: "I have absolutely no reasonable explanation for this."
+        },
+
+        {
+            title: "The way you look when you're concentrating.",
+            text: "You have no idea how unfair this is."
+        },
+
+        {
+            title: "The way you laugh.",
+            text: "I could probably listen to it way more than I should."
+        },
+
+        {
+            title: "The way you tease me.",
+            text: "It's annoying. Unfortunately, I like it."
+        },
+
+        {
+            title: "You when you're being completely yourself.",
+            text: "That's probably one of my favorite versions of you."
+        },
+
+        {
+            title: "You.",
+            text: "I think I've run out of reasonable explanations."
+        }
+
+    ],
+
+
+    finalSmall:
+        "FINAL ANALYSIS",
+
+    finalConclusion:
+        "After extensive investigation, the evidence is unfortunately overwhelming.",
+
+    finalCase:
+        "RIDICULOUSLY ATTRACTIVE.",
+
+
+    finalMessageSmall:
+        "WAIT.",
+
+    finalMessageTitle:
+        "There is one more thing.",
+
+    finalMessage:
+        "I think the real problem isn't that you're attractive.<br><br>It's that you're attractive to me."
+
+};
+
+</script>
+
+
+<!-- =====================================================
+     WARNING SCREEN
+     ===================================================== -->
+
+<div id="warningScreen" class="screen">
+
+    <div>
+
+        <div class="warning">
+            CONFIDENTIAL INFORMATION
+        </div>
+
+        <div class="warning-title">
+            <script>
+                document.write(editableText.warningTitle);
+            </script>
+        </div>
+
+        <div class="warning-text">
+            <script>
+                document.write(editableText.warningMain);
+            </script>
+        </div>
+
+        <div class="warning-small">
+            <script>
+                document.write(editableText.warningSmall);
+            </script>
+        </div>
+
+        <div
+            class="warning-star"
+            onclick="startReport()"
+        >
+            ✦
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     REPORT SCREEN
+     ===================================================== -->
+
+<div id="reportScreen" class="screen">
+
+    <div class="report">
+
+        <div class="report-header">
+
+            <div class="report-title">
+                ATTRACTIVENESS REPORT
+            </div>
+
+            <div class="report-line">
+                SUBJECT:
+                <span id="subjectName"></span>
+            </div>
+
+            <div class="report-line">
+                STATUS:
+                <span id="status"></span>
+            </div>
+
+            <div class="report-line">
+                SEVERITY:
+                <span id="severity"></span>
+            </div>
+
+            <div class="report-line">
+                EVIDENCE:
+                <span id="evidenceStatus"></span>
+            </div>
+
+        </div>
+
+
+        <div class="investigation">
+
+            <div class="investigation-text">
+                EVIDENCE COLLECTED: 0 / 7
+            </div>
+
+            <button
+                class="begin-button"
+                onclick="beginInvestigation()"
+            >
+                BEGIN INVESTIGATION
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     EVIDENCE SCREEN
+     ===================================================== -->
+
+<div id="evidenceScreen" class="screen">
+
+    <div class="evidence-container">
+
+        <div
+            class="evidence-counter"
+            id="evidenceCounter"
+        >
+        </div>
+
+
+        <div class="evidence-card">
+
+            <div
+                class="evidence-number"
+                id="evidenceNumber"
+            >
+            </div>
+
+            <div
+                class="evidence-title"
+                id="evidenceTitle"
+            >
+            </div>
+
+            <div
+                class="evidence-text"
+                id="evidenceText"
+            >
+            </div>
+
+
+            <button
+                class="reveal-button"
+                id="revealButton"
+                onclick="revealEvidence()"
+            >
+                REVEAL
+            </button>
+
+            <button
+                class="next-button hidden"
+                id="nextButton"
+                onclick="nextEvidence()"
+            >
+                ✦ NEXT EVIDENCE
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ANALYSIS SCREEN
+     ===================================================== -->
+
+<div id="analysisScreen" class="screen">
+
+    <div class="analysis">
+
+        <div class="analysis-title">
+            <script>
+                document.write(editableText.finalSmall);
+            </script>
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                ATTRACTIVENESS
+            </div>
+
+            <div class="bar">
+                <div
+                    class="bar-fill"
+                    style="width: 100%;"
+                ></div>
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                REASONABLE LEVEL
+            </div>
+
+            <div class="bar">
+                <div
+                    class="bar-fill"
+                    style="width: 20%;"
+                ></div>
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                MY ABILITY TO ACT NORMAL
+            </div>
+
+            <div class="bar">
+                <div
+                    class="bar-fill"
+                    style="width: 8%;"
+                ></div>
+            </div>
+
+        </div>
+
+
+        <div class="analysis-conclusion">
+
+            <script>
+                document.write(editableText.finalConclusion);
+            </script>
+
+            <div class="case-closed">
+                <script>
+                    document.write(editableText.finalCase);
+                </script>
+            </div>
+
+        </div>
+
+
+        <div
+            class="warning-star"
+            onclick="showFinalMessage()"
+        >
+            ✦
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FINAL MESSAGE
+     ===================================================== -->
+
+<div id="finalScreen" class="screen">
+
+    <div>
+
+        <div class="final-small">
+            <script>
+                document.write(editableText.finalMessageSmall);
+            </script>
+        </div>
+
+        <div class="final-title">
+            <script>
+                document.write(editableText.finalMessageTitle);
+            </script>
+        </div>
+
+        <div class="final-text">
+            <script>
+                document.write(editableText.finalMessage);
+            </script>
+        </div>
+
+
+        <a
+            class="final-star"
+            href="things-i-like-about-us.html"
+        >
+            ✦
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     YOU PROBABLY DON'T NEED TO CHANGE ANYTHING BELOW
+     ===================================================== -->
+
+<script>
+
+let currentEvidence = 0;
+
+
+/* Put the editable text into the report */
+
+document.getElementById("subjectName").textContent =
+    editableText.subjectName;
+
+document.getElementById("status").textContent =
+    editableText.status;
+
+document.getElementById("severity").textContent =
+    editableText.severity;
+
+document.getElementById("evidenceStatus").textContent =
+    editableText.evidenceStatus;
+
+
+/* Warning → Report */
+
+function startReport() {
+
+    document.getElementById("warningScreen").style.display = "none";
+
+    document.getElementById("reportScreen").style.display = "flex";
+
+}
+
+
+/* Report → Evidence */
+
+function beginInvestigation() {
+
+    document.getElementById("reportScreen").style.display = "none";
+
+    document.getElementById("evidenceScreen").style.display = "flex";
+
+    currentEvidence = 0;
+
+    showEvidence();
+
+}
+
+
+/* Show current evidence */
+
+function showEvidence() {
+
+    const evidence = editableText.evidence[currentEvidence];
+
+    document.getElementById("evidenceCounter").textContent =
+        "EVIDENCE COLLECTED: " +
+        currentEvidence +
+        " / " +
+        editableText.evidence.length;
+
+    document.getElementById("evidenceNumber").textContent =
+        "EVIDENCE " +
+        String(currentEvidence + 1).padStart(2, "0");
+
+    document.getElementById("evidenceTitle").textContent =
+        evidence.title;
+
+    document.getElementById("evidenceText").textContent =
+        "";
+
+    document.getElementById("revealButton").classList.remove("hidden");
+
+    document.getElementById("nextButton").classList.add("hidden");
+
+}
+
+
+/* Reveal evidence */
+
+function revealEvidence() {
+
+    const evidence = editableText.evidence[currentEvidence];
+
+    document.getElementById("evidenceText").textContent =
+        evidence.text;
+
+    document.getElementById("revealButton").classList.add("hidden");
+
+    document.getElementById("nextButton").classList.remove("hidden");
+
+}
+
+
+/* Next evidence */
+
+function nextEvidence() {
+
+    currentEvidence++;
+
+    if (currentEvidence >= editableText.evidence.length) {
+
+        document.getElementById("evidenceScreen").style.display = "none";
+
+        document.getElementById("analysisScreen").style.display = "flex";
+
+        return;
+
+    }
+
+    showEvidence();
+
+}
+
+
+/* Analysis → Final message */
+
+function showFinalMessage() {
+
+    document.getElementById("analysisScreen").style.display = "none";
+
+    document.getElementById("finalScreen").style.display = "flex";
+
+}
+
+</script>
+
+</body>
+</html>
