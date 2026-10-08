@@ -1,1 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Things I Like About Us</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #000;
+    color: white;
+    font-family: Georgia, "Times New Roman", serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================================
+   INTRO
+========================================= */
+
+#introScreen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    text-align: center;
+}
+
+.intro-container {
+    max-width: 600px;
+    animation: fadeIn 1.5s ease;
+}
+
+.intro-title {
+    font-size: 42px;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+
+.intro-text {
+    font-size: 18px;
+    line-height: 1.9;
+    color: #ccc;
+}
+
+.intro-star {
+    display: inline-block;
+    margin-top: 50px;
+    font-size: 48px;
+    cursor: pointer;
+    transition: 0.4s ease;
+}
+
+.intro-star:hover {
+    transform: scale(1.3);
+    text-shadow: 0 0 25px white;
+}
+
+
+/* =========================================
+   CONSTELLATION SCREEN
+========================================= */
+
+#constellationScreen {
+    display: none;
+    min-height: 100vh;
+    padding: 30px 20px 60px;
+    text-align: center;
+}
+
+.constellation-header {
+    max-width: 650px;
+    margin: 0 auto 20px;
+}
+
+.constellation-title {
+    font-size: 34px;
+    margin-bottom: 15px;
+}
+
+.constellation-subtitle {
+    color: #999;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.progress {
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #777;
+}
+
+
+/* =========================================
+   STAR FIELD
+========================================= */
+
+.constellation-area {
+    position: relative;
+    width: 100%;
+    max-width: 750px;
+    height: 500px;
+    margin: 35px auto 0;
+    border-top: 1px solid #222;
+    border-bottom: 1px solid #222;
+    overflow: hidden;
+}
+
+
+/* SVG is behind the stars */
+
+#constellationLines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.constellation-line {
+    stroke: white;
+    stroke-width: 1;
+    fill: none;
+    opacity: 0;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+}
+
+.constellation-line.draw {
+    opacity: 0.75;
+    animation: drawLine 1.2s ease forwards;
+}
+
+
+/* =========================================
+   STARS
+========================================= */
+
+.constellation-star {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+
+    border: none;
+    background: transparent;
+    color: white;
+
+    font-size: 28px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transform: translate(-50%, -50%);
+
+    transition:
+        transform 0.35s ease,
+        text-shadow 0.35s ease,
+        opacity 0.35s ease;
+
+    z-index: 5;
+}
+
+.constellation-star:hover {
+    transform: translate(-50%, -50%) scale(1.25);
+    text-shadow: 0 0 20px white;
+}
+
+.constellation-star.selected {
+    transform: translate(-50%, -50%) scale(1.35);
+    text-shadow:
+        0 0 8px white,
+        0 0 20px white,
+        0 0 35px white;
+}
+
+.constellation-star.connected {
+    text-shadow:
+        0 0 8px white,
+        0 0 18px white;
+}
+
+
+/* Star positions */
+
+.star-1 {
+    left: 18%;
+    top: 24%;
+}
+
+.star-2 {
+    left: 43%;
+    top: 16%;
+}
+
+.star-3 {
+    left: 72%;
+    top: 25%;
+}
+
+.star-4 {
+    left: 28%;
+    top: 53%;
+}
+
+.star-5 {
+    left: 61%;
+    top: 48%;
+}
+
+.star-6 {
+    left: 84%;
+    top: 60%;
+}
+
+.star-7 {
+    left: 43%;
+    top: 77%;
+}
+
+.star-8 {
+    left: 72%;
+    top: 82%;
+}
+
+
+/* =========================================
+   INSTRUCTION
+========================================= */
+
+.instruction {
+    margin-top: 25px;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #777;
+    min-height: 20px;
+}
+
+
+/* =========================================
+   REVEAL MESSAGE
+========================================= */
+
+#messageBox {
+    max-width: 600px;
+    margin: 40px auto 0;
+
+    opacity: 0;
+    transform: translateY(15px);
+
+    transition:
+        opacity 0.8s ease,
+        transform 0.8s ease;
+}
+
+#messageBox.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.message-label {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.message-title {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.message-text {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #ccc;
+}
+
+
+/* =========================================
+   FINAL CONSTELLATION
+========================================= */
+
+#finalScreen {
+    display: none;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+}
+
+.final-container {
+    max-width: 650px;
+    animation: fadeIn 1.5s ease;
+}
+
+.final-small {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: #777;
+    margin-bottom: 25px;
+}
+
+.final-title {
+    font-size: 38px;
+    margin-bottom: 30px;
+}
+
+.final-text {
+    font-size: 18px;
+    line-height: 2;
+    color: #ccc;
+}
+
+.final-star {
+    display: inline-block;
+    margin-top: 50px;
+
+    color: white;
+    text-decoration: none;
+    font-size: 46px;
+
+    transition: 0.4s ease;
+}
+
+.final-star:hover {
+    transform: scale(1.3);
+    text-shadow: 0 0 25px white;
+}
+
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+@keyframes drawLine {
+
+    from {
+        stroke-dashoffset: 1000;
+    }
+
+    to {
+        stroke-dashoffset: 0;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .intro-title {
+        font-size: 32px;
+    }
+
+    .constellation-title {
+        font-size: 28px;
+    }
+
+    .constellation-area {
+        height: 430px;
+    }
+
+    .constellation-star {
+        font-size: 25px;
+    }
+
+    .message-title {
+        font-size: 24px;
+    }
+
+    .final-title {
+        font-size: 31px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     EDITABLE TEXT
+     
+     THIS IS THE MAIN SECTION YOU EDIT.
+     YOU SHOULD NOT NEED TO SEARCH THROUGH THE REST
+     OF THE CODE TO CHANGE YOUR WORDING.
+===================================================== -->
+
+<script>
+
+const editableText = {
+
+    introTitle:
+        "Things I Like About Us",
+
+    introText:
+        "There are things I like about you.<br><br>And then there are things I only like because they're ours.",
+
+
+    instruction:
+        "Choose two stars that belong together.",
+
+
+    pairs: [
+
+        {
+            title: "The way we tease each other",
+
+            text:
+                "You somehow manage to annoy me and make me smile at the exact same time."
+        },
+
+        {
+            title: "How comfortable we can be",
+
+            text:
+                "I like that we don't always have to be doing something. Sometimes just being around you is enough."
+        },
+
+        {
+            title: "The way we make each other laugh",
+
+            text:
+                "Some of our conversations make absolutely no sense, and somehow those are some of my favorites."
+        },
+
+        {
+            title: "How we're taking things slowly",
+
+            text:
+                "I like that we don't have to rush into anything. We can just figure this out together."
+        }
+
+    ],
+
+
+    finalSmall:
+        "CONSTELLATION COMPLETE",
+
+    finalTitle:
+        "Maybe this is my favorite part.",
+
+    finalText:
+        "I don't know exactly where all of this goes.<br><br>But I really like where we are right now.<br><br>And I really like that whatever this becomes, it's ours."
+
+};
+
+</script>
+
+
+<!-- =====================================================
+     INTRO SCREEN
+===================================================== -->
+
+<section id="introScreen">
+
+    <div class="intro-container">
+
+        <div class="intro-title">
+            <script>
+                document.write(editableText.introTitle);
+            </script>
+        </div>
+
+        <div class="intro-text">
+            <script>
+                document.write(editableText.introText);
+            </script>
+        </div>
+
+        <div
+            class="intro-star"
+            onclick="startConstellation()"
+        >
+            ✦
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CONSTELLATION SCREEN
+===================================================== -->
+
+<section id="constellationScreen">
+
+    <div class="constellation-header">
+
+        <div class="constellation-title">
+            <script>
+                document.write(editableText.introTitle);
+            </script>
+        </div>
+
+        <div class="constellation-subtitle">
+            Every pair of stars hides something I like about us.
+        </div>
+
+        <div
+            class="progress"
+            id="progress"
+        >
+            0 / 4 CONSTELLATIONS
+        </div>
+
+    </div>
+
+
+    <div class="constellation-area" id="constellationArea">
+
+        <!--
+            The lines are drawn inside this SVG.
+            They begin invisible and animate outward.
+        -->
+
+        <svg
+            id="constellationLines"
+            viewBox="0 0 750 500"
+            preserveAspectRatio="none"
+        >
+
+        </svg>
+
+
+        <!-- PAIR 1 -->
+
+        <button
+            class="constellation-star star-1"
+            data-star="1"
+            aria-label="Constellation star 1"
+            onclick="selectStar(1)"
+        >
+            ✦
+        </button>
+
+        <button
+            class="constellation-star star-2"
+            data-star="2"
+            aria-label="Constellation star 2"
+            onclick="selectStar(2)"
+        >
+            ✦
+        </button>
+
+
+        <!-- PAIR 2 -->
+
+        <button
+            class="constellation-star star-3"
+            data-star="3"
+            aria-label="Constellation star 3"
+            onclick="selectStar(3)"
+        >
+            ✦
+        </button>
+
+        <button
+            class="constellation-star star-4"
+            data-star="4"
+            aria-label="Constellation star 4"
+            onclick="selectStar(4)"
+        >
+            ✦
+        </button>
+
+
+        <!-- PAIR 3 -->
+
+        <button
+            class="constellation-star star-5"
+            data-star="5"
+            aria-label="Constellation star 5"
+            onclick="selectStar(5)"
+        >
+            ✦
+        </button>
+
+        <button
+            class="constellation-star star-6"
+            data-star="6"
+            aria-label="Constellation star 6"
+            onclick="selectStar(6)"
+        >
+            ✦
+        </button>
+
+
+        <!-- PAIR 4 -->
+
+        <button
+            class="constellation-star star-7"
+            data-star="7"
+            aria-label="Constellation star 7"
+            onclick="selectStar(7)"
+        >
+            ✦
+        </button>
+
+        <button
+            class="constellation-star star-8"
+            data-star="8"
+            aria-label="Constellation star 8"
+            onclick="selectStar(8)"
+        >
+            ✦
+        </button>
+
+    </div>
+
+
+    <div
+        class="instruction"
+        id="instruction"
+    >
+        <script>
+            document.write(editableText.instruction);
+        </script>
+    </div>
+
+
+    <div id="messageBox">
+
+        <div class="message-label">
+            SOMETHING I LIKE
+        </div>
+
+        <div
+            class="message-title"
+            id="messageTitle"
+        >
+        </div>
+
+        <div
+            class="message-text"
+            id="messageText"
+        >
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FINAL SCREEN
+===================================================== -->
+
+<section id="finalScreen">
+
+    <div class="final-container">
+
+        <div class="final-small">
+            <script>
+                document.write(editableText.finalSmall);
+            </script>
+        </div>
+
+        <div class="final-title">
+            <script>
+                document.write(editableText.finalTitle);
+            </script>
+        </div>
+
+        <div class="final-text">
+            <script>
+                document.write(editableText.finalText);
+            </script>
+        </div>
+
+        <a
+            class="final-star"
+            href="things-id-never-admit.html"
+        >
+            ✦
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     
+     YOU PROBABLY DON'T NEED TO CHANGE ANYTHING BELOW.
+===================================================== -->
+
+<script>
+
+let selectedStar = null;
+
+let completedPairs = 0;
+
+const pairConnections = [
+
+    {
+        star1: 1,
+        star2: 2,
+        pairIndex: 0
+    },
+
+    {
+        star1: 3,
+        star2: 4,
+        pairIndex: 1
+    },
+
+    {
+        star1: 5,
+        star2: 6,
+        pairIndex: 2
+    },
+
+    {
+        star1: 7,
+        star2: 8,
+        pairIndex: 3
+    }
+
+];
+
+
+/* =========================================
+   START
+========================================= */
+
+function startConstellation() {
+
+    document.getElementById("introScreen").style.display = "none";
+
+    document.getElementById("constellationScreen").style.display = "block";
+
+}
+
+
+/* =========================================
+   STAR CLICK
+========================================= */
+
+function selectStar(starNumber) {
+
+    const star = document.querySelector(
+        '[data-star="' + starNumber + '"]'
+    );
+
+    /*
+        If this star already belongs to a completed
+        constellation, don't let it be selected again.
+    */
+
+    if (star.classList.contains("connected")) {
+        return;
+    }
+
+
+    /*
+        If no star has been selected yet,
+        select this one.
+    */
+
+    if (selectedStar === null) {
+
+        selectedStar = starNumber;
+
+        star.classList.add("selected");
+
+        document.getElementById("instruction").textContent =
+            "Now choose the star that belongs with it.";
+
+        return;
+
+    }
+
+
+    /*
+        Clicking the same star again cancels selection.
+    */
+
+    if (selectedStar === starNumber) {
+
+        star.classList.remove("selected");
+
+        selectedStar = null;
+
+        document.getElementById("instruction").textContent =
+            editableText.instruction;
+
+        return;
+
+    }
+
+
+    /*
+        Check whether the two stars are actually
+        a matching pair.
+    */
+
+    const matchingPair = pairConnections.find(function(pair) {
+
+        return (
+            (pair.star1 === selectedStar &&
+             pair.star2 === starNumber)
+
+            ||
+
+            (pair.star1 === starNumber &&
+             pair.star2 === selectedStar)
+        );
+
+    });
+
+
+    /*
+        If they don't belong together,
+        briefly show a message.
+    */
+
+    if (!matchingPair) {
+
+        star.style.transform =
+            "translate(-50%, -50%) scale(0.8)";
+
+        setTimeout(function() {
+
+            star.style.transform =
+                "translate(-50%, -50%)";
+
+        }, 250);
+
+        document.getElementById("instruction").textContent =
+            "Not quite. Try another star.";
+
+        return;
+
+    }
+
+
+    /*
+        Correct pair!
+    */
+
+    connectStars(
+        selectedStar,
+        starNumber,
+        matchingPair.pairIndex
+    );
+
+}
+
+
+/* =========================================
+   CONNECT TWO STARS
+========================================= */
+
+function connectStars(starOneNumber, starTwoNumber, pairIndex) {
+
+    const starOne = document.querySelector(
+        '[data-star="' + starOneNumber + '"]'
+    );
+
+    const starTwo = document.querySelector(
+        '[data-star="' + starTwoNumber + '"]'
+    );
+
+
+    starOne.classList.remove("selected");
+
+    starOne.classList.add("connected");
+
+    starTwo.classList.add("connected");
+
+
+    /*
+        Create the animated line.
+    */
+
+    const svg = document.getElementById(
+        "constellationLines"
+    );
+
+    const pointOne = getStarPosition(starOne);
+
+    const pointTwo = getStarPosition(starTwo);
+
+
+    const line = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "line"
+    );
+
+    line.setAttribute(
+        "x1",
+        pointOne.x
+    );
+
+    line.setAttribute(
+        "y1",
+        pointOne.y
+    );
+
+    line.setAttribute(
+        "x2",
+        pointTwo.x
+    );
+
+    line.setAttribute(
+        "y2",
+        pointTwo.y
+    );
+
+    line.classList.add(
+        "constellation-line"
+    );
+
+
+    svg.appendChild(line);
+
+
+    /*
+        Wait one frame so the browser sees
+        the starting state before animating.
+    */
+
+    requestAnimationFrame(function() {
+
+        line.classList.add("draw");
+
+    });
+
+
+    completedPairs++;
+
+    document.getElementById("progress").textContent =
+        completedPairs +
+        " / " +
+        editableText.pairs.length +
+        " CONSTELLATIONS";
+
+
+    selectedStar = null;
+
+
+    /*
+        Show the corresponding message.
+    */
+
+    showMessage(pairIndex);
+
+
+    /*
+        Update instructions.
+    */
+
+    if (
+        completedPairs <
+        editableText.pairs.length
+    ) {
+
+        document.getElementById("instruction").textContent =
+            "Another constellation is waiting.";
+
+    }
+
+
+    /*
+        After all four are complete,
+        finish the constellation.
+    */
+
+    if (
+        completedPairs ===
+        editableText.pairs.length
+    ) {
+
+        setTimeout(function() {
+
+            finishConstellation();
+
+        }, 3500);
+
+    }
+
+}
+
+
+/* =========================================
+   GET STAR POSITION
+========================================= */
+
+function getStarPosition(star) {
+
+    const area =
+        document.getElementById("constellationArea");
+
+    const areaRect =
+        area.getBoundingClientRect();
+
+    const starRect =
+        star.getBoundingClientRect();
+
+
+    return {
+
+        x:
+            (
+                starRect.left +
+                starRect.width / 2 -
+                areaRect.left
+            )
+            *
+            (750 / areaRect.width),
+
+        y:
+            (
+                starRect.top +
+                starRect.height / 2 -
+                areaRect.top
+            )
+            *
+            (500 / areaRect.height)
+
+    };
+
+}
+
+
+/* =========================================
+   SHOW MESSAGE
+========================================= */
+
+function showMessage(pairIndex) {
+
+    const pair =
+        editableText.pairs[pairIndex];
+
+
+    const messageBox =
+        document.getElementById("messageBox");
+
+
+    const title =
+        document.getElementById("messageTitle");
+
+    const text =
+        document.getElementById("messageText");
+
+
+    messageBox.classList.remove("visible");
+
+
+    setTimeout(function() {
+
+        title.textContent =
+            pair.title;
+
+        text.innerHTML =
+            pair.text;
+
+        messageBox.classList.add("visible");
+
+    }, 150);
+
+}
+
+
+/* =========================================
+   FINISH
+========================================= */
+
+function finishConstellation() {
+
+    document.getElementById("instruction").textContent =
+        "The constellation is complete.";
+
+    /*
+        Make every connected star gently glow.
+    */
+
+    const connectedStars =
+        document.querySelectorAll(
+            ".constellation-star.connected"
+        );
+
+
+    connectedStars.forEach(function(star, index) {
+
+        setTimeout(function() {
+
+            star.style.textShadow =
+                "0 0 8px white, 0 0 20px white, 0 0 35px white";
+
+        }, index * 100);
+
+    });
+
+
+    /*
+        Give the user a moment to see the
+        finished constellation before moving on.
+    */
+
+    setTimeout(function() {
+
+        document.getElementById(
+            "constellationScreen"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "finalScreen"
+        ).style.display = "flex";
+
+    }, 4500);
+
+}
+
+</script>
+
+</body>
+</html>
