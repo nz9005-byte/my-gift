@@ -1,1 +1,2026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Things I'd Never Admit</title>
+
+<style>
+
+/* =========================================================
+   BASIC PAGE
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    background: #050505;
+    color: white;
+    font-family: Georgia, "Times New Roman", serif;
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.background {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.background::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(255,255,255,0.045),
+            transparent 35%
+        );
+
+    animation: backgroundPulse 7s ease-in-out infinite;
+}
+
+@keyframes backgroundPulse {
+
+    0%, 100% {
+        opacity: 0.45;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+
+/* tiny background particles */
+
+.particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.15;
+
+    animation:
+        particleFloat linear infinite,
+        particleBlink ease-in-out infinite;
+}
+
+@keyframes particleFloat {
+
+    from {
+        transform: translateY(20vh);
+    }
+
+    to {
+        transform: translateY(-120vh);
+    }
+}
+
+@keyframes particleBlink {
+
+    0%, 100% {
+        opacity: 0.08;
+    }
+
+    50% {
+        opacity: 0.35;
+    }
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
+
+.page {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px 20px;
+}
+
+
+/* =========================================================
+   OPENING SCREEN
+========================================================= */
+
+#introScreen {
+    width: 100%;
+    max-width: 700px;
+
+    text-align: center;
+
+    animation: introAppear 1.5s ease forwards;
+}
+
+@keyframes introAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.private-label {
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    letter-spacing: 6px;
+
+    color: #777;
+
+    margin-bottom: 28px;
+
+    animation:
+        labelAppear 1s ease forwards,
+        subtleFlicker 4s 2s infinite;
+}
+
+@keyframes labelAppear {
+
+    from {
+        opacity: 0;
+        letter-spacing: 14px;
+    }
+
+    to {
+        opacity: 1;
+        letter-spacing: 6px;
+    }
+}
+
+@keyframes subtleFlicker {
+
+    0%, 95%, 100% {
+        opacity: 1;
+    }
+
+    96% {
+        opacity: 0.35;
+    }
+
+    97% {
+        opacity: 1;
+    }
+
+    98% {
+        opacity: 0.5;
+    }
+}
+
+
+.intro-title {
+    font-size: clamp(38px, 8vw, 72px);
+    font-weight: normal;
+    letter-spacing: 2px;
+
+    margin: 0 0 25px;
+
+    text-shadow:
+        0 0 15px rgba(255,255,255,0.08);
+
+    animation: titleFade 1.5s ease forwards;
+}
+
+@keyframes titleFade {
+
+    from {
+        opacity: 0;
+        filter: blur(8px);
+    }
+
+    to {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+
+.intro-text {
+    max-width: 500px;
+    margin: 0 auto 40px;
+
+    color: #aaa;
+
+    line-height: 1.9;
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   UNLOCK STAR
+========================================================= */
+
+.unlock-star {
+    width: 95px;
+    height: 95px;
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 42px;
+
+    color: white;
+
+    cursor: pointer;
+
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+
+    transition:
+        transform 0.4s ease,
+        box-shadow 0.4s ease,
+        border-color 0.4s ease;
+
+    animation:
+        starFloat 3s ease-in-out infinite,
+        starAppear 1.5s ease forwards;
+}
+
+@keyframes starAppear {
+
+    from {
+        opacity: 0;
+        transform: scale(0.4);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes starFloat {
+
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+.unlock-star:hover {
+    transform: scale(1.12);
+    border-color: rgba(255,255,255,0.7);
+
+    box-shadow:
+        0 0 15px rgba(255,255,255,0.15),
+        0 0 40px rgba(255,255,255,0.08);
+}
+
+.unlock-star:active {
+    transform: scale(0.92);
+}
+
+
+/* =========================================================
+   ARCHIVE AREA
+========================================================= */
+
+#archiveScreen {
+    display: none;
+
+    width: 100%;
+    max-width: 760px;
+
+    opacity: 0;
+}
+
+#archiveScreen.show {
+    display: block;
+
+    animation: archiveAppear 1.2s ease forwards;
+}
+
+@keyframes archiveAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   ARCHIVE HEADER
+========================================================= */
+
+.archive-header {
+    text-align: center;
+
+    margin-bottom: 35px;
+}
+
+.archive-small {
+    font-family: "Courier New", monospace;
+
+    color: #666;
+
+    font-size: 11px;
+    letter-spacing: 4px;
+
+    margin-bottom: 12px;
+}
+
+.archive-title {
+    font-size: clamp(28px, 6vw, 46px);
+
+    font-weight: normal;
+
+    margin: 0 0 10px;
+}
+
+.archive-subtitle {
+    color: #777;
+
+    font-family: "Courier New", monospace;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress-container {
+    margin: 0 auto 30px;
+
+    max-width: 500px;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+
+    font-family: "Courier New", monospace;
+
+    color: #666;
+
+    font-size: 11px;
+
+    margin-bottom: 8px;
+}
+
+.progress-bar {
+    height: 2px;
+
+    background: #181818;
+
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+
+    width: 0%;
+
+    background: white;
+
+    transition: width 0.8s ease;
+}
+
+
+/* =========================================================
+   FILE
+========================================================= */
+
+.file-wrapper {
+    perspective: 1200px;
+}
+
+
+/* little folder tab */
+
+.file-tab {
+    width: 150px;
+    height: 22px;
+
+    background: #151515;
+
+    border: 1px solid #282828;
+    border-bottom: none;
+
+    margin-left: 25px;
+
+    position: relative;
+
+    transform: translateY(1px);
+
+    transition:
+        background 0.4s ease,
+        border-color 0.4s ease;
+}
+
+.file-tab::after {
+    content: "";
+
+    position: absolute;
+
+    right: -15px;
+    top: -1px;
+
+    width: 15px;
+    height: 22px;
+
+    background: #151515;
+
+    clip-path: polygon(
+        0 0,
+        100% 100%,
+        0 100%
+    );
+}
+
+
+.file {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 380px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #111 0%,
+            #0b0b0b 45%,
+            #101010 100%
+        );
+
+    border: 1px solid #292929;
+
+    padding: 35px;
+
+    transform-style: preserve-3d;
+
+    box-shadow:
+        0 20px 70px rgba(0,0,0,0.45);
+
+    transition:
+        border-color 0.5s ease,
+        box-shadow 0.5s ease,
+        transform 0.6s ease;
+}
+
+.file::before {
+    content: "";
+
+    position: absolute;
+    inset: 8px;
+
+    border: 1px solid rgba(255,255,255,0.025);
+
+    pointer-events: none;
+}
+
+.file:hover {
+    border-color: #383838;
+}
+
+
+/* =========================================================
+   FILE TOP INFORMATION
+========================================================= */
+
+.file-top {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 20px;
+
+    margin-bottom: 35px;
+}
+
+.file-number {
+    font-family: "Courier New", monospace;
+
+    color: #555;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+}
+
+.file-status {
+    font-family: "Courier New", monospace;
+
+    color: #555;
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+    border: 1px solid #292929;
+
+    padding: 6px 10px;
+}
+
+.file-status.unlocked {
+    color: white;
+
+    border-color: #666;
+
+    animation: statusFlash 0.8s ease;
+}
+
+@keyframes statusFlash {
+
+    0% {
+        background: white;
+        color: black;
+    }
+
+    100% {
+        background: transparent;
+        color: white;
+    }
+}
+
+
+/* =========================================================
+   REDACTED CONTENT
+========================================================= */
+
+.redacted-area {
+    position: relative;
+
+    min-height: 170px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+/* title */
+
+.secret-label {
+    font-family: "Courier New", monospace;
+
+    color: #555;
+
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 18px;
+}
+
+.secret-title {
+    font-size: clamp(25px, 5vw, 38px);
+
+    font-weight: normal;
+
+    line-height: 1.3;
+
+    margin: 0 0 20px;
+}
+
+
+/* =========================================================
+   REDACTION BARS
+========================================================= */
+
+.redactions {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+
+    margin-bottom: 28px;
+}
+
+.redaction {
+    height: 12px;
+
+    background: #252525;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.redaction:nth-child(1) {
+    width: 88%;
+}
+
+.redaction:nth-child(2) {
+    width: 72%;
+}
+
+.redaction:nth-child(3) {
+    width: 94%;
+}
+
+.redaction:nth-child(4) {
+    width: 55%;
+}
+
+.redaction::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -100%;
+
+    width: 70%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.06),
+            transparent
+        );
+
+    animation: redactionShimmer 3s linear infinite;
+}
+
+@keyframes redactionShimmer {
+
+    from {
+        left: -100%;
+    }
+
+    to {
+        left: 150%;
+    }
+}
+
+
+/* =========================================================
+   UNLOCK BUTTON
+========================================================= */
+
+.unlock-button {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 10px;
+
+    background: transparent;
+
+    color: #aaa;
+
+    border: 1px solid #333;
+
+    padding: 12px 18px;
+
+    font-family: "Courier New", monospace;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s ease;
+}
+
+.unlock-button:hover {
+    color: white;
+
+    border-color: #777;
+
+    background: #151515;
+
+    transform: translateY(-2px);
+}
+
+.unlock-button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   ACTUAL SECRET
+========================================================= */
+
+.actual-secret {
+    display: none;
+
+    opacity: 0;
+
+    transform: translateY(15px);
+
+    border-left: 1px solid #555;
+
+    padding-left: 20px;
+}
+
+.actual-secret.show {
+    display: block;
+
+    animation: secretReveal 1.2s ease forwards;
+}
+
+@keyframes secretReveal {
+
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+        filter: blur(5px);
+    }
+
+    60% {
+        opacity: 1;
+        filter: blur(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.secret-text {
+    font-size: 20px;
+
+    line-height: 1.8;
+
+    color: #ddd;
+
+    margin: 0;
+}
+
+
+/* blinking cursor */
+
+.typing-cursor {
+    display: inline-block;
+
+    width: 7px;
+    height: 20px;
+
+    background: #aaa;
+
+    margin-left: 5px;
+
+    vertical-align: middle;
+
+    animation: cursorBlink 0.8s steps(2) infinite;
+}
+
+@keyframes cursorBlink {
+
+    50% {
+        opacity: 0;
+    }
+}
+
+
+/* =========================================================
+   NEXT BUTTON
+========================================================= */
+
+.next-secret {
+    display: none;
+
+    margin-top: 30px;
+
+    background: transparent;
+
+    border: none;
+
+    color: #777;
+
+    font-family: "Courier New", monospace;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.3s ease,
+        transform 0.3s ease;
+}
+
+.next-secret.show {
+    display: inline-block;
+
+    animation: nextAppear 1s ease forwards;
+}
+
+@keyframes nextAppear {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.next-secret:hover {
+    color: white;
+
+    transform: translateX(5px);
+}
+
+
+/* =========================================================
+   FILE CHANGE ANIMATION
+========================================================= */
+
+.file.changing {
+    animation: fileChange 0.65s ease;
+}
+
+@keyframes fileChange {
+
+    0% {
+        opacity: 1;
+        transform: translateX(0) rotateY(0);
+    }
+
+    45% {
+        opacity: 0;
+        transform: translateX(-20px) rotateY(-4deg);
+    }
+
+    55% {
+        opacity: 0;
+        transform: translateX(20px) rotateY(4deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) rotateY(0);
+    }
+}
+
+
+/* =========================================================
+   FINAL SCREEN
+========================================================= */
+
+#finalScreen {
+    display: none;
+
+    width: 100%;
+    max-width: 700px;
+
+    text-align: center;
+
+    opacity: 0;
+}
+
+#finalScreen.show {
+    display: block;
+
+    animation: finalAppear 2s ease forwards;
+}
+
+@keyframes finalAppear {
+
+    from {
+        opacity: 0;
+        filter: blur(8px);
+    }
+
+    to {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+
+.final-small {
+    font-family: "Courier New", monospace;
+
+    color: #555;
+
+    font-size: 11px;
+
+    letter-spacing: 4px;
+
+    margin-bottom: 25px;
+}
+
+.final-title {
+    font-size: clamp(35px, 8vw, 62px);
+
+    font-weight: normal;
+
+    margin: 0 0 30px;
+}
+
+.final-text {
+    color: #aaa;
+
+    line-height: 2;
+
+    font-size: 16px;
+
+    max-width: 500px;
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   FINAL STAR
+========================================================= */
+
+.final-star {
+    width: 85px;
+    height: 85px;
+
+    margin: 50px auto 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 38px;
+
+    border: 1px solid #333;
+
+    border-radius: 50%;
+
+    transition:
+        transform 0.4s ease,
+        border-color 0.4s ease,
+        box-shadow 0.4s ease;
+
+    animation: finalStarFloat 3s ease-in-out infinite;
+}
+
+@keyframes finalStarFloat {
+
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.final-star:hover {
+    transform: scale(1.1);
+
+    border-color: white;
+
+    box-shadow:
+        0 0 20px rgba(255,255,255,0.15),
+        0 0 50px rgba(255,255,255,0.08);
+}
+
+
+/* =========================================================
+   SCREEN SHAKE
+========================================================= */
+
+.shake {
+    animation: screenShake 0.35s ease;
+}
+
+@keyframes screenShake {
+
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-4px);
+    }
+
+    40% {
+        transform: translateX(4px);
+    }
+
+    60% {
+        transform: translateX(-3px);
+    }
+
+    80% {
+        transform: translateX(3px);
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .page {
+        padding: 25px 15px;
+    }
+
+    .file {
+        padding: 25px 20px;
+
+        min-height: 400px;
+    }
+
+    .file-top {
+        margin-bottom: 25px;
+    }
+
+    .secret-text {
+        font-size: 18px;
+    }
+
+    .file-tab {
+        margin-left: 15px;
+    }
+
+    .archive-header {
+        margin-bottom: 25px;
+    }
+
+    .final-text {
+        font-size: 15px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<!-- =====================================================
+     BACKGROUND
+====================================================== -->
+
+<div class="background" id="background"></div>
+
+
+<div class="page">
+
+
+    <!-- =================================================
+         INTRO SCREEN
+    ================================================== -->
+
+    <section id="introScreen">
+
+        <div class="private-label">
+            PRIVATE ARCHIVE
+        </div>
+
+        <h1 class="intro-title">
+            Things I'd Never Admit
+        </h1>
+
+        <p class="intro-text">
+            Some things are easier to write down
+            than say out loud.
+            <br><br>
+            So... don't judge me.
+        </p>
+
+        <div
+            class="unlock-star"
+            onclick="openArchive()"
+            title="Open"
+        >
+            ✦
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ARCHIVE SCREEN
+    ================================================== -->
+
+    <section id="archiveScreen">
+
+        <div class="archive-header">
+
+            <div class="archive-small">
+                RESTRICTED ACCESS
+            </div>
+
+            <h1 class="archive-title">
+                Private Files
+            </h1>
+
+            <div class="archive-subtitle">
+                SOME THINGS WERE NEVER MEANT TO BE SAID
+            </div>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div class="progress-container">
+
+            <div class="progress-text">
+
+                <span id="progressLabel">
+                    FILE 01
+                </span>
+
+                <span id="progressCount">
+                    0 / 7 UNLOCKED
+                </span>
+
+            </div>
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    id="progressFill"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- FILE -->
+
+        <div class="file-wrapper">
+
+            <div class="file-tab"></div>
+
+            <div class="file" id="file">
+
+
+                <!-- FILE HEADER -->
+
+                <div class="file-top">
+
+                    <div class="file-number" id="fileNumber">
+                        PRIVATE ENTRY 01
+                    </div>
+
+                    <div
+                        class="file-status"
+                        id="fileStatus"
+                    >
+                        LOCKED
+                    </div>
+
+                </div>
+
+
+                <!-- FILE CONTENT -->
+
+                <div class="redacted-area">
+
+
+                    <div
+                        class="secret-label"
+                        id="secretLabel"
+                    >
+                        CLASSIFIED
+                    </div>
+
+
+                    <h2
+                        class="secret-title"
+                        id="secretTitle"
+                    >
+                        I replay our conversations.
+                    </h2>
+
+
+                    <!-- REDACTED VERSION -->
+
+                    <div
+                        class="redactions"
+                        id="redactions"
+                    >
+
+                        <div class="redaction"></div>
+                        <div class="redaction"></div>
+                        <div class="redaction"></div>
+                        <div class="redaction"></div>
+
+                    </div>
+
+
+                    <!-- UNLOCK BUTTON -->
+
+                    <button
+                        class="unlock-button"
+                        id="unlockButton"
+                        onclick="unlockSecret()"
+                    >
+                        <span>✦</span>
+                        UNLOCK FILE
+                    </button>
+
+
+                    <!-- REAL SECRET -->
+
+                    <div
+                        class="actual-secret"
+                        id="actualSecret"
+                    >
+
+                        <p
+                            class="secret-text"
+                            id="secretText"
+                        ></p>
+
+                    </div>
+
+
+                    <!-- NEXT -->
+
+                    <button
+                        class="next-secret"
+                        id="nextButton"
+                        onclick="nextSecret()"
+                    >
+                        NEXT SECRET →
+                    </button>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         FINAL SCREEN
+    ================================================== -->
+
+    <section id="finalScreen">
+
+        <div class="final-small">
+            ARCHIVE COMPLETE
+        </div>
+
+        <h1 class="final-title">
+            Okay.
+        </h1>
+
+        <p class="final-text">
+            That's enough evidence.
+            <br><br>
+            You were never supposed to see that much.
+        </p>
+
+
+        <a
+            class="final-star"
+            href="things-i-want-to-do-with-you.html"
+        >
+            ✦
+        </a>
+
+    </section>
+
+
+</div>
+
+
+
+<script>
+
+/* =========================================================
+   EDITABLE TEXT
+   =========================================================
+
+   THIS IS THE MAIN SECTION YOU SHOULD EDIT.
+
+   You can change the titles and confessions here
+   without touching the rest of the code.
+
+========================================================= */
+
+const editableText = {
+
+    introTitle:
+        "Things I'd Never Admit",
+
+    introText:
+        "Some things are easier to write down than say out loud.<br><br>So... don't judge me.",
+
+
+    archiveTitle:
+        "Private Files",
+
+    archiveSubtitle:
+        "SOME THINGS WERE NEVER MEANT TO BE SAID",
+
+
+    secrets: [
+
+        {
+            title:
+                "I replay our conversations.",
+
+            text:
+                "Sometimes I'll remember something you said hours later and randomly start smiling."
+        },
+
+
+        {
+            title:
+                "You still make me nervous.",
+
+            text:
+                "Even though I know you, somehow you can still make me forget what I was about to say."
+        },
+
+
+        {
+            title:
+                "I notice when you're not around.",
+
+            text:
+                "I don't always realize I'm looking for you until I realize you're not there."
+        },
+
+
+        {
+            title:
+                "Sometimes I can't believe this is real.",
+
+            text:
+                "After everything that happened, there's still a part of me that's surprised you're actually here."
+        },
+
+
+        {
+            title:
+                "I care more than I let on.",
+
+            text:
+                "Probably significantly more."
+        },
+
+
+        {
+            title:
+                "Sometimes I wonder if you realize how much you mean to me.",
+
+            text:
+                "Because I'm not sure I've ever actually said it properly."
+        },
+
+
+        {
+            title:
+                "I think I've liked you for much longer than I ever admitted.",
+
+            text:
+                "Maybe that's why this means so much to me."
+        }
+
+    ],
+
+
+    finalSmall:
+        "ARCHIVE COMPLETE",
+
+    finalTitle:
+        "Okay.",
+
+    finalText:
+        "That's enough evidence.<br><br>You were never supposed to see that much."
+
+};
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let currentSecret = 0;
+
+let unlockedSecrets = 0;
+
+let isUnlocked = false;
+
+
+/* =========================================================
+   CREATE BACKGROUND PARTICLES
+========================================================= */
+
+const background =
+    document.getElementById("background");
+
+for (let i = 0; i < 35; i++) {
+
+    const particle =
+        document.createElement("div");
+
+    particle.className = "particle";
+
+    particle.style.left =
+        Math.random() * 100 + "%";
+
+    particle.style.top =
+        Math.random() * 100 + "%";
+
+    particle.style.animationDuration =
+        (8 + Math.random() * 15) + "s";
+
+    particle.style.animationDelay =
+        (Math.random() * 8) + "s";
+
+    background.appendChild(particle);
+}
+
+
+/* =========================================================
+   APPLY EDITABLE TEXT
+========================================================= */
+
+document.querySelector(".intro-title").innerHTML =
+    editableText.introTitle;
+
+document.querySelector(".intro-text").innerHTML =
+    editableText.introText;
+
+document.querySelector(".archive-title").innerHTML =
+    editableText.archiveTitle;
+
+document.querySelector(".archive-subtitle").innerHTML =
+    editableText.archiveSubtitle;
+
+document.querySelector(".final-small").innerHTML =
+    editableText.finalSmall;
+
+document.querySelector(".final-title").innerHTML =
+    editableText.finalTitle;
+
+document.querySelector(".final-text").innerHTML =
+    editableText.finalText;
+
+
+/* =========================================================
+   OPEN ARCHIVE
+========================================================= */
+
+function openArchive() {
+
+    const intro =
+        document.getElementById("introScreen");
+
+    const archive =
+        document.getElementById("archiveScreen");
+
+
+    /* fade intro out */
+
+    intro.style.transition =
+        "opacity 0.8s ease, transform 0.8s ease";
+
+    intro.style.opacity = "0";
+
+    intro.style.transform =
+        "translateY(-20px)";
+
+
+    /* wait before showing archive */
+
+    setTimeout(() => {
+
+        intro.style.display = "none";
+
+        archive.classList.add("show");
+
+    }, 800);
+
+}
+
+
+/* =========================================================
+   UNLOCK SECRET
+========================================================= */
+
+function unlockSecret() {
+
+    if (isUnlocked) {
+        return;
+    }
+
+    isUnlocked = true;
+
+
+    const file =
+        document.getElementById("file");
+
+    const redactions =
+        document.getElementById("redactions");
+
+    const unlockButton =
+        document.getElementById("unlockButton");
+
+    const actualSecret =
+        document.getElementById("actualSecret");
+
+    const secretText =
+        document.getElementById("secretText");
+
+    const fileStatus =
+        document.getElementById("fileStatus");
+
+    const nextButton =
+        document.getElementById("nextButton");
+
+
+    /* =====================================================
+       LITTLE FILE SHAKE
+    ===================================================== */
+
+    file.classList.add("shake");
+
+    setTimeout(() => {
+
+        file.classList.remove("shake");
+
+    }, 400);
+
+
+    /* =====================================================
+       BUTTON DISAPPEARS
+    ===================================================== */
+
+    unlockButton.style.transition =
+        "opacity 0.4s ease, transform 0.4s ease";
+
+    unlockButton.style.opacity = "0";
+
+    unlockButton.style.transform =
+        "translateY(10px)";
+
+
+    /* =====================================================
+       REDACTIONS FADE
+    ===================================================== */
+
+    setTimeout(() => {
+
+        redactions.style.transition =
+            "opacity 0.6s ease, filter 0.6s ease";
+
+        redactions.style.opacity = "0";
+
+        redactions.style.filter =
+            "blur(6px)";
+
+    }, 150);
+
+
+    /* =====================================================
+       STATUS CHANGES
+    ===================================================== */
+
+    setTimeout(() => {
+
+        fileStatus.innerHTML =
+            "UNLOCKED";
+
+        fileStatus.classList.add("unlocked");
+
+    }, 450);
+
+
+    /* =====================================================
+       HIDE REDACTIONS
+    ===================================================== */
+
+    setTimeout(() => {
+
+        redactions.style.display = "none";
+
+        unlockButton.style.display = "none";
+
+    }, 700);
+
+
+    /* =====================================================
+       SHOW ACTUAL SECRET
+    ===================================================== */
+
+    setTimeout(() => {
+
+        actualSecret.classList.add("show");
+
+        typeSecret(
+            editableText.secrets[currentSecret].text
+        );
+
+    }, 800);
+
+
+    /* =====================================================
+       NEXT BUTTON
+    ===================================================== */
+
+    setTimeout(() => {
+
+        nextButton.classList.add("show");
+
+        if (
+            currentSecret ===
+            editableText.secrets.length - 1
+        ) {
+
+            nextButton.innerHTML =
+                "FINISH ARCHIVE →";
+
+        }
+
+    }, 2200);
+
+
+    unlockedSecrets++;
+
+    updateProgress();
+}
+
+
+/* =========================================================
+   TYPING EFFECT
+========================================================= */
+
+function typeSecret(text) {
+
+    const secretText =
+        document.getElementById("secretText");
+
+    secretText.innerHTML = "";
+
+    let index = 0;
+
+
+    const cursor =
+        document.createElement("span");
+
+    cursor.className =
+        "typing-cursor";
+
+
+    secretText.appendChild(cursor);
+
+
+    function typeNextCharacter() {
+
+        if (index >= text.length) {
+
+            cursor.remove();
+
+            return;
+        }
+
+
+        const character =
+            text[index];
+
+        const textNode =
+            document.createTextNode(character);
+
+        secretText.insertBefore(
+            textNode,
+            cursor
+        );
+
+        index++;
+
+
+        let speed = 28;
+
+
+        /* make punctuation pause */
+
+        if (
+            character === "." ||
+            character === "," ||
+            character === "?"
+        ) {
+            speed = 150;
+        }
+
+
+        setTimeout(
+            typeNextCharacter,
+            speed
+        );
+    }
+
+
+    typeNextCharacter();
+}
+
+
+/* =========================================================
+   NEXT SECRET
+========================================================= */
+
+function nextSecret() {
+
+    const file =
+        document.getElementById("file");
+
+
+    /* =====================================================
+       IF LAST SECRET
+    ===================================================== */
+
+    if (
+        currentSecret >=
+        editableText.secrets.length - 1
+    ) {
+
+        finishArchive();
+
+        return;
+    }
+
+
+    /* =====================================================
+       START TRANSITION
+    ===================================================== */
+
+    file.classList.add("changing");
+
+
+    setTimeout(() => {
+
+        currentSecret++;
+
+        isUnlocked = false;
+
+        loadSecret();
+
+    }, 300);
+
+
+    setTimeout(() => {
+
+        file.classList.remove("changing");
+
+    }, 700);
+}
+
+
+/* =========================================================
+   LOAD SECRET
+========================================================= */
+
+function loadSecret() {
+
+    const secret =
+        editableText.secrets[currentSecret];
+
+
+    const fileNumber =
+        document.getElementById("fileNumber");
+
+    const fileStatus =
+        document.getElementById("fileStatus");
+
+    const secretTitle =
+        document.getElementById("secretTitle");
+
+    const redactions =
+        document.getElementById("redactions");
+
+    const unlockButton =
+        document.getElementById("unlockButton");
+
+    const actualSecret =
+        document.getElementById("actualSecret");
+
+    const nextButton =
+        document.getElementById("nextButton");
+
+
+    /* =====================================================
+       UPDATE FILE NUMBER
+    ===================================================== */
+
+    fileNumber.innerHTML =
+        "PRIVATE ENTRY " +
+        String(currentSecret + 1).padStart(2, "0");
+
+
+    /* =====================================================
+       RESET STATUS
+    ===================================================== */
+
+    fileStatus.innerHTML =
+        "LOCKED";
+
+    fileStatus.classList.remove("unlocked");
+
+
+    /* =====================================================
+       UPDATE TITLE
+    ===================================================== */
+
+    secretTitle.innerHTML =
+        secret.title;
+
+
+    /* =====================================================
+       RESET REDACTIONS
+    ===================================================== */
+
+    redactions.style.display = "flex";
+
+    redactions.style.opacity = "1";
+
+    redactions.style.filter = "blur(0)";
+
+
+    /* =====================================================
+       RESET SECRET
+    ===================================================== */
+
+    actualSecret.classList.remove("show");
+
+    document.getElementById("secretText").innerHTML =
+        "";
+
+
+    /* =====================================================
+       RESET UNLOCK BUTTON
+    ===================================================== */
+
+    unlockButton.style.display =
+        "inline-flex";
+
+    unlockButton.style.opacity = "1";
+
+    unlockButton.style.transform =
+        "translateY(0)";
+
+
+    /* =====================================================
+       RESET NEXT BUTTON
+    ===================================================== */
+
+    nextButton.classList.remove("show");
+
+    nextButton.innerHTML =
+        "NEXT SECRET →";
+
+
+    /* =====================================================
+       UPDATE PROGRESS
+    ===================================================== */
+
+    updateProgress();
+
+}
+
+
+/* =========================================================
+   UPDATE PROGRESS BAR
+========================================================= */
+
+function updateProgress() {
+
+    const progressLabel =
+        document.getElementById("progressLabel");
+
+    const progressCount =
+        document.getElementById("progressCount");
+
+    const progressFill =
+        document.getElementById("progressFill");
+
+
+    progressLabel.innerHTML =
+        "FILE " +
+        String(currentSecret + 1).padStart(2, "0");
+
+
+    progressCount.innerHTML =
+        unlockedSecrets +
+        " / " +
+        editableText.secrets.length +
+        " UNLOCKED";
+
+
+    const percentage =
+        (
+            unlockedSecrets /
+            editableText.secrets.length
+        ) * 100;
+
+
+    progressFill.style.width =
+        percentage + "%";
+}
+
+
+/* =========================================================
+   FINISH ARCHIVE
+========================================================= */
+
+function finishArchive() {
+
+    const archive =
+        document.getElementById("archiveScreen");
+
+    const final =
+        document.getElementById("finalScreen");
+
+
+    /* =====================================================
+       FADE ARCHIVE OUT
+    ===================================================== */
+
+    archive.style.transition =
+        "opacity 1.3s ease, transform 1.3s ease";
+
+    archive.style.opacity = "0";
+
+    archive.style.transform =
+        "translateY(-20px)";
+
+
+    /* =====================================================
+       SHOW FINAL
+    ===================================================== */
+
+    setTimeout(() => {
+
+        archive.style.display = "none";
+
+        final.classList.add("show");
+
+    }, 1300);
+
+}
+
+</script>
+
+</body>
+</html>
