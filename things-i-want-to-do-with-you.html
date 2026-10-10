@@ -1,2012 +1,626 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="theme-color" content="#09090b">
 <title>Things I Want To Do With You</title>
-
 <style>
-
-/* =========================================================
-   RESET
-========================================================= */
-
-* {
-    box-sizing: border-box;
+:root {
+  --night: #09090b;
+  --ink: #242321;
+  --paper: #f2eee5;
+  --serif: Georgia, "Times New Roman", serif;
+  --script: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-
-html,
+* { box-sizing: border-box; }
+html { min-height: 100%; background: var(--night); }
 body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100%;
+  margin: 0; min-height: 100vh; color: #f4f1eb;
+  background:
+    radial-gradient(ellipse at 50% 10%, rgba(95,91,104,.15), transparent 45%),
+    var(--night);
+  font-family: var(--sans); overflow-x: hidden;
 }
-
-body {
-    background: #050505;
-    color: #f5f5f5;
-    font-family: Georgia, "Times New Roman", serif;
-    overflow-x: hidden;
+button, a { font: inherit; -webkit-tap-highlight-color: transparent; }
+.starscape { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+.star-dot {
+  position: absolute; width: 2px; height: 2px; border-radius: 50%;
+  background: rgba(255,255,255,.72); box-shadow: 0 0 8px rgba(255,255,255,.35);
+  animation: twinkle var(--duration,4s) ease-in-out infinite alternate;
+  animation-delay: var(--delay,0s);
 }
-
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
-
-.background {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
+@keyframes twinkle {
+  from { opacity: .22; transform: scale(.8); }
+  to { opacity: .9; transform: scale(1.25); }
 }
-
-.background::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-
-    background:
-        radial-gradient(
-            circle at 50% 50%,
-            rgba(255,255,255,0.045),
-            transparent 42%
-        );
-
-    animation: backgroundBreath 9s ease-in-out infinite;
+.site-shell { position: relative; min-height: 100vh; display: flex; flex-direction: column; }
+.topline {
+  width: min(1100px,calc(100% - 40px)); margin: auto; padding: 24px 0 12px;
+  display: flex; justify-content: space-between; gap: 16px;
+  color: #bcb9b4; font-size: 10px; letter-spacing: .24em; text-transform: uppercase;
 }
-
-@keyframes backgroundBreath {
-
-    0%, 100% {
-        opacity: 0.45;
-        transform: scale(0.95);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scale(1.08);
-    }
+.mark { display: flex; align-items: center; gap: 10px; }
+.moon-mark {
+  width: 15px; height: 15px; display: inline-block; border-radius: 50%;
+  background: #eeece6; position: relative;
 }
-
-
-/* =========================================================
-   FLOATING DUST
-========================================================= */
-
-.dust {
-    position: absolute;
-
-    width: 2px;
-    height: 2px;
-
-    border-radius: 50%;
-
-    background: white;
-
-    opacity: 0;
-
-    animation:
-        dustFloat linear infinite,
-        dustGlow ease-in-out infinite;
+.moon-mark::after {
+  content: ""; position: absolute; width: 13px; height: 13px;
+  top: -3px; left: 5px; border-radius: 50%; background: var(--night);
 }
-
-@keyframes dustFloat {
-
-    from {
-        transform: translateY(110vh) translateX(0);
-    }
-
-    to {
-        transform: translateY(-20vh) translateX(40px);
-    }
+.private { opacity: .6; }
+main { flex: 1; display: grid; place-items: center; padding: 20px 20px 36px; }
+.screen { width: min(900px,100%); }
+.intro-screen { text-align: center; padding: 30px 0 50px; animation: fade-up .8s ease both; }
+.eyebrow { font-size: 10px; letter-spacing: .32em; text-transform: uppercase; color: #a9a5a0; }
+.intro-moon {
+  width: 100px; height: 100px; margin: 30px auto 28px; border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, #fffef8, #d8d6d0 48%, #8c8a8b);
+  box-shadow: 0 0 0 1px #ffffff24, 0 0 45px #e6e3dc1f, 0 0 100px #dcd8d20f;
+  position: relative;
 }
-
-@keyframes dustGlow {
-
-    0%, 100% {
-        opacity: 0.03;
-    }
-
-    50% {
-        opacity: 0.25;
-    }
+.intro-moon::before, .intro-moon::after {
+  content: ""; position: absolute; border-radius: 50%; background: #67646324;
 }
-
-
-/* =========================================================
-   MAIN PAGE
-========================================================= */
-
-.page {
-    position: relative;
-    z-index: 2;
-
-    width: 100%;
-    min-height: 100vh;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 40px 20px;
+.intro-moon::before {
+  width: 17px; height: 17px; top: 22px; left: 26px;
+  box-shadow: 25px 28px 0 -4px #6764632e, 2px 42px 0 -6px #67646324;
 }
-
-
-/* =========================================================
-   INTRO
-========================================================= */
-
-#intro {
-    width: 100%;
-    max-width: 700px;
-
-    text-align: center;
-
-    animation: introIn 1.8s ease forwards;
+.intro-moon::after {
+  width: 130px; height: 130px; border: 1px solid #ffffff24;
+  background: transparent; top: -16px; left: -16px;
 }
-
-@keyframes introIn {
-
-    from {
-        opacity: 0;
-        transform: translateY(25px);
-        filter: blur(8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-        filter: blur(0);
-    }
+h1 {
+  margin: 0; font: 400 clamp(34px,6vw,58px)/1.08 var(--serif);
+  letter-spacing: -.04em;
 }
-
-.intro-label {
-    font-family: "Courier New", monospace;
-
-    font-size: 11px;
-
-    letter-spacing: 5px;
-
-    color: #666;
-
-    margin-bottom: 28px;
+.intro-copy {
+  margin: 23px auto 0; color: #bcb8b2;
+  font: 16px/1.9 var(--serif); max-width: 360px;
 }
-
-.intro-title {
-    font-size: clamp(40px, 8vw, 72px);
-
-    font-weight: normal;
-
-    line-height: 1.05;
-
-    margin: 0 0 28px;
-
-    letter-spacing: 1px;
+.intro-copy em { color: #f2eee7; }
+.primary-button {
+  display: inline-flex; justify-content: center; align-items: center; gap: 13px;
+  margin-top: 35px; padding: 14px 21px; border: 1px solid #ffffff61;
+  border-radius: 2px; color: #f4f1eb; background: #ffffff09;
+  text-transform: uppercase; letter-spacing: .2em; font-size: 10px; cursor: pointer;
+  transition: background .25s,border-color .25s,transform .25s;
 }
-
-.intro-text {
-    max-width: 500px;
-
-    margin: 0 auto 45px;
-
-    color: #999;
-
-    font-size: 16px;
-
-    line-height: 1.9;
+.primary-button:hover { background: #ffffff1a; border-color: #ffffffbf; transform: translateY(-2px); }
+.primary-button:focus-visible,.nav-button:focus-visible,.final-link:focus-visible {
+  outline: 2px solid white; outline-offset: 5px;
 }
-
-
-/* =========================================================
-   OPEN BUTTON
-========================================================= */
-
-.open-memory {
-    position: relative;
-
-    width: 95px;
-    height: 95px;
-
-    margin: auto;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    border: 1px solid #333;
-
-    color: white;
-
-    font-size: 38px;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.5s cubic-bezier(.2,.8,.2,1),
-        border-color 0.5s ease,
-        box-shadow 0.5s ease;
+.book-heading {
+  display: flex; align-items: end; justify-content: space-between;
+  gap: 16px; margin: 0 0 16px;
 }
-
-.open-memory::before {
-    content: "";
-
-    position: absolute;
-
-    inset: -10px;
-
-    border: 1px solid rgba(255,255,255,0.04);
-
-    border-radius: 50%;
-
-    animation: ringPulse 3s ease-in-out infinite;
+.book-heading h2 {
+  margin: 0; font: 400 clamp(21px,3vw,28px)/1.2 var(--serif); letter-spacing: -.025em;
 }
-
-@keyframes ringPulse {
-
-    0%, 100% {
-        transform: scale(0.95);
-        opacity: 0.2;
-    }
-
-    50% {
-        transform: scale(1.08);
-        opacity: 0.7;
-    }
+.book-heading p {
+  margin: 8px 0 0; color: #918d88; font-size: 9px;
+  letter-spacing: .19em; text-transform: uppercase;
 }
-
-.open-memory:hover {
-    transform: scale(1.12);
-
-    border-color: #aaa;
-
-    box-shadow:
-        0 0 20px rgba(255,255,255,0.12),
-        0 0 55px rgba(255,255,255,0.05);
+.page-counter { color: #b6b2ac; font-size: 10px; letter-spacing: .15em; font-variant-numeric: tabular-nums; }
+.book-frame {
+  position: relative; padding: 13px; border-radius: 4px;
+  background: linear-gradient(135deg,#35343a,#17171b 35%,#252429 70%,#111114);
+  box-shadow: 0 25px 70px #0009, 0 0 0 1px #ffffff12, inset 0 1px #ffffff17;
 }
-
-.open-memory:active {
-    transform: scale(0.94);
+.book-frame::before {
+  content: ""; position: absolute; inset: 7px; border: 1px solid #ffffff0f;
+  pointer-events: none; border-radius: 2px;
 }
-
-
-/* =========================================================
-   MEMORY AREA
-========================================================= */
-
-#memoryArea {
-    display: none;
-
-    width: 100%;
-
-    min-height: 90vh;
-
-    text-align: center;
+.book-page {
+  min-height: 510px; position: relative; overflow: hidden; color: var(--ink);
+  background:
+    radial-gradient(ellipse at 16% 13%, #ffffffb8, transparent 38%),
+    radial-gradient(ellipse at 82% 91%, #b5a99421, transparent 38%),
+    repeating-linear-gradient(0deg,#50463705 0,#50463705 1px,transparent 1px,transparent 4px),
+    var(--paper);
+  box-shadow: inset 0 0 0 1px #584b3a24, inset 0 0 25px #6e5e4814;
 }
-
-#memoryArea.show {
-    display: block;
-
-    animation: areaIn 1.3s ease forwards;
+.book-page::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg,#46392b14,transparent 5%,transparent 96%,#46392b0f);
 }
-
-@keyframes areaIn {
-
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+.page-content {
+  position: relative; z-index: 1; min-height: 510px; padding: clamp(24px,5vw,48px);
+  display: flex; flex-direction: column;
 }
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.memory-header {
-    position: relative;
-
-    z-index: 20;
-
-    padding-top: 10px;
-
-    margin-bottom: 20px;
+.page-content.page-turning {
+  animation: page-arrive .52s cubic-bezier(.2,.72,.2,1) both;
 }
-
-.memory-label {
-    font-family: "Courier New", monospace;
-
-    color: #555;
-
-    font-size: 10px;
-
-    letter-spacing: 4px;
-
-    margin-bottom: 10px;
+@keyframes page-arrive {
+  from { opacity: .25; transform: perspective(1200px) rotateY(-5deg) translateX(10px); filter: blur(1px); }
+  to { opacity: 1; transform: perspective(1200px) rotateY(0) translateX(0); filter: blur(0); }
 }
-
+.page-meta {
+  display: flex; justify-content: space-between; gap: 12px; align-items: center;
+  color: #77716a; font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+}
+.tiny-star { font-size: 15px; }
+.tape {
+  position: absolute; z-index: 3; width: 82px; height: 24px; top: 20px; left: 50%;
+  transform: translateX(-50%) rotate(-3deg); background: #c6beae7a;
+  border-left: 1px solid #ffffff4d; border-right: 1px solid #786e5e1a;
+  box-shadow: 0 2px 5px #28231d0f;
+}
+.page-layout {
+  display: grid; grid-template-columns: minmax(0,1.15fr) minmax(150px,.85fr);
+  gap: clamp(20px,5vw,54px); align-items: center; flex: 1; padding: 32px 0 24px;
+}
+.memory-index { color: #8b857b; font-size: 10px; letter-spacing: .23em; text-transform: uppercase; margin-bottom: 20px; }
 .memory-title {
-    font-size: clamp(28px, 6vw, 46px);
-
-    font-weight: normal;
-
-    margin: 0;
+  margin: 0; font: 400 clamp(28px,4.6vw,43px)/1.13 var(--serif); letter-spacing: -.04em;
 }
-
-.memory-subtitle {
-    font-family: "Courier New", monospace;
-
-    color: #666;
-
-    font-size: 10px;
-
-    margin-top: 12px;
-
-    letter-spacing: 2px;
+.memory-body {
+  margin: 22px 0 0; max-width: 410px; color: #615d57;
+  font: 16px/1.9 var(--script); white-space: pre-line;
 }
-
-
-/* =========================================================
-   POSTCARD STAGE
-========================================================= */
-
-.card-stage {
-    position: relative;
-
-    width: min(900px, 100%);
-    height: 560px;
-
-    margin: 0 auto;
-
-    perspective: 1800px;
-
-    overflow: visible;
+.hand-note { margin-top: 26px; color: #77716a; font: italic 12px/1.6 var(--serif); }
+.photo-placeholder {
+  min-height: 255px; aspect-ratio: 4/5; max-width: 245px; justify-self: center; width: 100%;
+  position: relative; padding: 12px 12px 42px; background: #fbf9f3;
+  box-shadow: 0 8px 22px #2f292c2b, 0 0 0 1px #53493c1f;
+  transform: rotate(var(--tilt,2deg)); transition: transform .4s;
 }
-
-
-/* =========================================================
-   POSTCARD
-========================================================= */
-
-.postcard {
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    width: min(390px, 78vw);
-    height: 270px;
-
-    transform-style: preserve-3d;
-
-    transform:
-        translate(-50%, -50%)
-        rotate(var(--rotation))
-        translate3d(var(--x), var(--y), var(--depth));
-
-    cursor: pointer;
-
-    transition:
-        transform 1s cubic-bezier(.16,1,.3,1),
-        opacity 0.8s ease,
-        filter 0.8s ease;
-
-    will-change: transform;
+.photo-placeholder:hover { transform: rotate(0deg) translateY(-3px); }
+.photo-art {
+  position: relative; width: 100%; height: 100%; min-height: 198px; overflow: hidden;
+  display: grid; place-items: center;
+  background: radial-gradient(circle at 70% 24%,#f4efe00e 0 2px,transparent 3px),
+              linear-gradient(155deg,#4d4c52,#25262c 55%,#15161a);
 }
-
-
-/* =========================================================
-   PAPER
-========================================================= */
-
-.paper {
-    position: absolute;
-
-    inset: 0;
-
-    transform-style: preserve-3d;
-
-    border: 1px solid rgba(255,255,255,0.16);
-
-    background:
-        linear-gradient(
-            135deg,
-            #e8e6df 0%,
-            #f4f2eb 48%,
-            #dfddd6 100%
-        );
-
-    color: #171717;
-
-    box-shadow:
-        0 25px 45px rgba(0,0,0,0.35),
-        0 7px 14px rgba(0,0,0,0.3);
-
-    transition:
-        box-shadow 0.5s ease;
+.photo-art::before {
+  content: ""; position: absolute; width: 110px; height: 110px; top: 24px; right: 14px;
+  border-radius: 50%; background: radial-gradient(circle at 34% 28%,#f8f5eb,#c8c4ba 68%,#77777b);
+  box-shadow: 0 0 25px #f6f1e433;
 }
-
-
-/* paper texture */
-
-.paper::before {
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    opacity: 0.14;
-
-    pointer-events: none;
-
-    background-image:
-        repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 3px,
-            rgba(0,0,0,0.035) 4px
-        );
+.photo-art::after {
+  content: ""; position: absolute; inset: auto -15% -25% -15%; height: 56%;
+  background: linear-gradient(145deg,#0e1015,#313139 48%,#16171c);
+  clip-path: polygon(0 100%,0 65%,19% 25%,34% 62%,53% 10%,72% 61%,88% 31%,100% 67%,100% 100%);
 }
-
-
-/* paper edge */
-
-.paper::after {
-    content: "";
-
-    position: absolute;
-
-    inset: 5px;
-
-    border: 1px solid rgba(0,0,0,0.07);
-
-    pointer-events: none;
+.orbit {
+  position: absolute; width: 170px; height: 60px;
+  border: 1px solid #f5f1e673; border-radius: 50%; transform: rotate(-24deg); z-index: 1;
 }
-
-
-/* =========================================================
-   CARD SHADOW
-========================================================= */
-
-.postcard::after {
-    content: "";
-
-    position: absolute;
-
-    left: 8%;
-    right: 8%;
-    bottom: -25px;
-
-    height: 25px;
-
-    background: rgba(0,0,0,0.5);
-
-    filter: blur(18px);
-
-    border-radius: 50%;
-
-    z-index: -1;
-
-    transition:
-        opacity 0.5s ease,
-        transform 0.5s ease;
+.art-caption {
+  position: absolute; z-index: 2; bottom: 13px; color: #ffffffd1;
+  font-size: 8px; letter-spacing: .22em; text-transform: uppercase;
 }
-
-
-/* =========================================================
-   CARD HOVER
-========================================================= */
-
-.postcard:not(.active):hover {
-    transform:
-        translate(-50%, -50%)
-        rotate(calc(var(--rotation) * 0.5))
-        translate3d(var(--x), calc(var(--y) - 12px), var(--depth));
-
-    z-index: 30;
+.polaroid-caption {
+  position: absolute; bottom: 12px; left: 8px; right: 8px;
+  text-align: center; color: #716b62; font: italic 12px var(--serif);
 }
-
-.postcard:hover .paper {
-    box-shadow:
-        0 35px 65px rgba(0,0,0,0.5),
-        0 10px 20px rgba(0,0,0,0.35);
+.page-bottom {
+  display: flex; justify-content: space-between; align-items: end; gap: 16px;
+  padding-top: 16px; border-top: 1px solid #37332d26;
+  color: #817b72; font-size: 9px; letter-spacing: .17em; text-transform: uppercase;
 }
-
-
-/* =========================================================
-   CARD FRONT / BACK
-========================================================= */
-
-.card-inner {
-    position: absolute;
-
-    inset: 0;
-
-    transform-style: preserve-3d;
-
-    transition:
-        transform 1.15s cubic-bezier(.2,.75,.2,1);
+.page-bottom .handwritten { font: italic 12px var(--serif); letter-spacing: 0; text-transform: none; }
+.end-page { justify-content: center; text-align: center; align-items: center; }
+.end-page .page-meta { width: 100%; text-align: left; }
+.end-moon {
+  width: 62px; height: 62px; margin: 36px 0 25px; border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%,#fffef8,#d8d5ce 58%,#9d9a99);
+  box-shadow: 0 0 25px #605b511f; position: relative;
 }
-
-.postcard.flipped .card-inner {
-    transform: rotateY(180deg);
+.end-moon::after {
+  content: ""; position: absolute; width: 78px; height: 78px; top: -9px; left: -9px;
+  border: 1px solid #5b554c40; border-radius: 50%;
 }
-
-
-.card-front,
-.card-back {
-    position: absolute;
-
-    inset: 0;
-
-    backface-visibility: hidden;
-
-    -webkit-backface-visibility: hidden;
+.end-title {
+  max-width: 560px; margin: 0;
+  font: 400 clamp(31px,5.2vw,48px)/1.15 var(--serif); letter-spacing: -.035em;
 }
-
-
-/* =========================================================
-   FRONT
-========================================================= */
-
-.card-front {
-    padding: 28px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: space-between;
-
-    text-align: left;
+.end-copy {
+  max-width: 430px; margin: 22px 0 0; color: #666159;
+  font: 16px/1.95 var(--script); white-space: pre-line;
 }
-
-.card-number {
-    font-family: "Courier New", monospace;
-
-    font-size: 10px;
-
-    letter-spacing: 3px;
-
-    color: #666;
+.final-link {
+  display: inline-flex; align-items: center; gap: 12px; margin-top: 30px; padding: 12px 18px;
+  border: 1px solid #423c3859; color: #393630; text-decoration: none;
+  font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+  transition: background .25s,color .25s,transform .25s;
 }
-
-.card-front-title {
-    font-size: 31px;
-
-    line-height: 1.15;
-
-    max-width: 300px;
-
-    font-weight: normal;
+.final-link:hover { background: #292823; color: #faf7f0; transform: translateY(-2px); }
+.nav-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 18px; }
+.nav-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 43px;
+  padding: 0 16px; border: 1px solid #ffffff30; border-radius: 2px;
+  background: #ffffff09; color: #e7e3dd; cursor: pointer;
+  font-size: 9px; letter-spacing: .16em; text-transform: uppercase;
+  transition: background .2s,border-color .2s,opacity .2s;
 }
-
-.card-hint {
-    font-family: "Courier New", monospace;
-
-    font-size: 9px;
-
-    letter-spacing: 2px;
-
-    color: #777;
+.nav-button:hover:not(:disabled) { background: #ffffff1a; border-color: #ffffff6b; }
+.nav-button:disabled { opacity: .22; cursor: not-allowed; }
+.nav-button .arrow { font-size: 15px; }
+.nav-hint { text-align: center; color: #77737a; font-size: 9px; letter-spacing: .15em; text-transform: uppercase; }
+.progress-track { height: 1px; margin-top: 18px; background: #ffffff1a; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: #e3dfd7; transition: width .45s; }
+.hidden { display: none !important; }
+.visually-hidden {
+  position: absolute !important; width: 1px !important; height: 1px !important;
+  padding: 0 !important; margin: -1px !important; overflow: hidden !important;
+  clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important;
 }
-
-.card-mark {
-    position: absolute;
-
-    right: 28px;
-    bottom: 25px;
-
-    font-size: 26px;
-
-    opacity: 0.35;
+.footer-note { padding: 0 20px 22px; text-align: center; color: #66626a; font-size: 9px; letter-spacing: .12em; }
+@keyframes fade-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width:620px) {
+  .topline { width: calc(100% - 30px); padding-top: 18px; font-size: 8px; letter-spacing: .17em; }
+  main { padding: 12px 12px 28px; }
+  .book-heading { align-items: start; }
+  .book-heading p { font-size: 8px; }
+  .book-frame { padding: 8px; }
+  .book-page,.page-content { min-height: 560px; }
+  .page-content { padding: 27px 22px 24px; }
+  .page-layout { grid-template-columns: 1fr; gap: 20px; padding: 26px 0 24px; align-content: start; }
+  .memory-index { margin-bottom: 13px; }
+  .memory-title { font-size: clamp(27px,8vw,37px); }
+  .memory-body { margin-top: 14px; font-size: 15px; line-height: 1.75; }
+  .hand-note { margin-top: 15px; }
+  .photo-placeholder { width: min(180px,55%); min-height: 190px; padding: 8px 8px 32px; }
+  .photo-art { min-height: 150px; }
+  .photo-art::before { width: 75px; height: 75px; }
+  .orbit { width: 130px; height: 45px; }
+  .polaroid-caption { font-size: 10px; bottom: 8px; }
+  .page-bottom { padding-top: 12px; font-size: 8px; }
+  .page-bottom .handwritten { font-size: 11px; }
+  .nav-button { min-height: 42px; padding: 0 11px; font-size: 8px; letter-spacing: .1em; }
+  .nav-hint { max-width: 82px; font-size: 8px; line-height: 1.6; }
+  .tape { top: 13px; width: 68px; height: 20px; }
 }
-
-
-/* =========================================================
-   BACK
-========================================================= */
-
-.card-back {
-    transform: rotateY(180deg);
-
-    padding: 30px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: space-between;
-
-    text-align: left;
+@media (max-width:370px) {
+  .page-content { padding-left: 17px; padding-right: 17px; }
+  .nav-button { padding: 0 8px; gap: 6px; }
+  .nav-hint { display: none; }
 }
-
-.back-top {
-    display: flex;
-
-    justify-content: space-between;
-
-    font-family: "Courier New", monospace;
-
-    color: #777;
-
-    font-size: 9px;
-
-    letter-spacing: 2px;
+@media (prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important; transition-duration: .01ms !important;
+  }
 }
-
-.back-message {
-    font-size: 20px;
-
-    line-height: 1.65;
-
-    max-width: 310px;
-}
-
-.back-bottom {
-    font-family: "Courier New", monospace;
-
-    color: #777;
-
-    font-size: 9px;
-
-    letter-spacing: 2px;
-}
-
-
-/* =========================================================
-   ACTIVE CARD
-========================================================= */
-
-.postcard.active {
-    z-index: 100;
-
-    transform:
-        translate(-50%, -50%)
-        rotate(0deg)
-        translate3d(0, -10px, 200px)
-        scale(1.08);
-}
-
-.postcard.active .paper {
-    box-shadow:
-        0 50px 90px rgba(0,0,0,0.65),
-        0 10px 30px rgba(0,0,0,0.45);
-}
-
-.postcard.active::after {
-    opacity: 0.8;
-
-    transform: scale(1.2);
-}
-
-
-/* =========================================================
-   CARD OPENING
-========================================================= */
-
-.postcard.opening {
-    animation: cardLift 0.9s cubic-bezier(.16,1,.3,1) forwards;
-}
-
-@keyframes cardLift {
-
-    0% {
-        transform:
-            translate(-50%, -50%)
-            rotate(var(--rotation))
-            translate3d(var(--x), var(--y), var(--depth));
-    }
-
-    55% {
-        transform:
-            translate(-50%, -50%)
-            rotate(-2deg)
-            translate3d(0, -28px, 280px)
-            scale(1.12);
-    }
-
-    100% {
-        transform:
-            translate(-50%, -50%)
-            rotate(0deg)
-            translate3d(0, -10px, 200px)
-            scale(1.08);
-    }
-}
-
-
-/* =========================================================
-   BACKGROUND CARDS WHEN ONE IS ACTIVE
-========================================================= */
-
-.card-stage.has-active .postcard:not(.active) {
-    filter: blur(2px);
-
-    opacity: 0.45;
-
-    transform:
-        translate(-50%, -50%)
-        rotate(var(--rotation))
-        translate3d(var(--x), calc(var(--y) + 15px), var(--depth))
-        scale(0.94);
-}
-
-
-/* =========================================================
-   CARD CONTROLS
-========================================================= */
-
-.card-controls {
-    position: relative;
-
-    z-index: 150;
-
-    min-height: 75px;
-
-    margin-top: 5px;
-}
-
-.next-card {
-    display: none;
-
-    background: transparent;
-
-    color: #aaa;
-
-    border: none;
-
-    font-family: "Courier New", monospace;
-
-    font-size: 10px;
-
-    letter-spacing: 3px;
-
-    cursor: pointer;
-
-    padding: 15px 20px;
-
-    transition:
-        color 0.3s ease,
-        transform 0.3s ease;
-}
-
-.next-card.show {
-    display: inline-block;
-
-    animation: buttonAppear 0.8s ease forwards;
-}
-
-@keyframes buttonAppear {
-
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.next-card:hover {
-    color: white;
-
-    transform: translateX(7px);
-}
-
-
-/* =========================================================
-   COUNTER
-========================================================= */
-
-.memory-counter {
-    font-family: "Courier New", monospace;
-
-    color: #555;
-
-    font-size: 9px;
-
-    letter-spacing: 2px;
-
-    margin-top: 8px;
-}
-
-
-/* =========================================================
-   FINAL CARD GATHERING
-========================================================= */
-
-.gathering .postcard {
-
-    transition:
-        transform 1.8s cubic-bezier(.16,1,.3,1),
-        opacity 1.2s ease,
-        filter 1.2s ease;
-}
-
-
-/* each card gets its own final position */
-
-.gathering .postcard:nth-child(1) {
-    transform:
-        translate(-50%, -50%)
-        rotate(-12deg)
-        translate3d(-170px, -20px, 100px)
-        scale(0.75);
-}
-
-.gathering .postcard:nth-child(2) {
-    transform:
-        translate(-50%, -50%)
-        rotate(8deg)
-        translate3d(130px, -80px, 90px)
-        scale(0.75);
-}
-
-.gathering .postcard:nth-child(3) {
-    transform:
-        translate(-50%, -50%)
-        rotate(14deg)
-        translate3d(180px, 80px, 80px)
-        scale(0.75);
-}
-
-.gathering .postcard:nth-child(4) {
-    transform:
-        translate(-50%, -50%)
-        rotate(-8deg)
-        translate3d(-120px, 100px, 70px)
-        scale(0.75);
-}
-
-.gathering .postcard:nth-child(5) {
-    transform:
-        translate(-50%, -50%)
-        rotate(5deg)
-        translate3d(20px, 20px, 150px)
-        scale(0.78);
-}
-
-.gathering .postcard:nth-child(6) {
-    transform:
-        translate(-50%, -50%)
-        rotate(-16deg)
-        translate3d(-210px, 60px, 60px)
-        scale(0.7);
-}
-
-.gathering .postcard:nth-child(7) {
-    transform:
-        translate(-50%, -50%)
-        rotate(11deg)
-        translate3d(220px, -5px, 60px)
-        scale(0.7);
-}
-
-.gathering .postcard:nth-child(8) {
-    transform:
-        translate(-50%, -50%)
-        rotate(-4deg)
-        translate3d(0, -150px, 50px)
-        scale(0.7);
-}
-
-
-/* =========================================================
-   FINAL MEMORY
-========================================================= */
-
-#finalMemory {
-    display: none;
-
-    width: 100%;
-
-    max-width: 650px;
-
-    margin: 0 auto;
-
-    text-align: center;
-
-    opacity: 0;
-}
-
-#finalMemory.show {
-    display: block;
-
-    animation:
-        finalMemoryIn 2s cubic-bezier(.16,1,.3,1) forwards;
-}
-
-@keyframes finalMemoryIn {
-
-    from {
-        opacity: 0;
-        transform: translateY(35px);
-        filter: blur(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-        filter: blur(0);
-    }
-}
-
-.final-label {
-    font-family: "Courier New", monospace;
-
-    color: #555;
-
-    font-size: 10px;
-
-    letter-spacing: 4px;
-
-    margin-bottom: 30px;
-}
-
-.final-memory-title {
-    font-size: clamp(34px, 7vw, 58px);
-
-    font-weight: normal;
-
-    margin: 0 0 30px;
-}
-
-.final-memory-text {
-    font-size: 17px;
-
-    color: #aaa;
-
-    line-height: 2;
-
-    max-width: 520px;
-
-    margin: auto;
-}
-
-
-/* =========================================================
-   FINAL STAR
-========================================================= */
-
-.final-star {
-    width: 85px;
-    height: 85px;
-
-    margin: 50px auto 0;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    color: white;
-
-    text-decoration: none;
-
-    border: 1px solid #333;
-
-    border-radius: 50%;
-
-    font-size: 38px;
-
-    transition:
-        transform 0.5s ease,
-        border-color 0.5s ease,
-        box-shadow 0.5s ease;
-
-    animation:
-        finalStarFloat 3s ease-in-out infinite;
-}
-
-@keyframes finalStarFloat {
-
-    0%, 100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-8px);
-    }
-}
-
-.final-star:hover {
-    transform: scale(1.12);
-
-    border-color: white;
-
-    box-shadow:
-        0 0 20px rgba(255,255,255,0.15),
-        0 0 60px rgba(255,255,255,0.07);
-}
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 650px) {
-
-    .page {
-        padding: 25px 15px;
-    }
-
-    .card-stage {
-        height: 500px;
-    }
-
-    .postcard {
-        width: min(350px, 86vw);
-        height: 245px;
-    }
-
-    .postcard.active {
-        transform:
-            translate(-50%, -50%)
-            rotate(0deg)
-            translate3d(0, -5px, 180px)
-            scale(1.02);
-    }
-
-    .card-front-title {
-        font-size: 26px;
-    }
-
-    .back-message {
-        font-size: 18px;
-    }
-
-    .gathering .postcard:nth-child(1) {
-        transform:
-            translate(-50%, -50%)
-            rotate(-10deg)
-            translate3d(-90px, -20px, 100px)
-            scale(0.65);
-    }
-
-    .gathering .postcard:nth-child(2) {
-        transform:
-            translate(-50%, -50%)
-            rotate(8deg)
-            translate3d(80px, -60px, 90px)
-            scale(0.65);
-    }
-
-    .gathering .postcard:nth-child(3) {
-        transform:
-            translate(-50%, -50%)
-            rotate(12deg)
-            translate3d(90px, 60px, 80px)
-            scale(0.65);
-    }
-
-    .gathering .postcard:nth-child(4) {
-        transform:
-            translate(-50%, -50%)
-            rotate(-8deg)
-            translate3d(-75px, 70px, 70px)
-            scale(0.65);
-    }
-
-    .gathering .postcard:nth-child(5) {
-        transform:
-            translate(-50%, -50%)
-            rotate(5deg)
-            translate3d(0, 10px, 150px)
-            scale(0.68);
-    }
-
-    .gathering .postcard:nth-child(6) {
-        transform:
-            translate(-50%, -50%)
-            rotate(-14deg)
-            translate3d(-105px, 45px, 60px)
-            scale(0.6);
-    }
-
-    .gathering .postcard:nth-child(7) {
-        transform:
-            translate(-50%, -50%)
-            rotate(10deg)
-            translate3d(110px, 0, 60px)
-            scale(0.6);
-    }
-
-    .gathering .postcard:nth-child(8) {
-        transform:
-            translate(-50%, -50%)
-            rotate(-4deg)
-            translate3d(0, -105px, 50px)
-            scale(0.6);
-    }
-}
-
 </style>
 </head>
-
-
 <body>
+<div class="starscape" id="starscape" aria-hidden="true"></div>
+<div class="site-shell">
+  <header class="topline">
+    <span class="mark"><span class="moon-mark" aria-hidden="true"></span> A LITTLE BOOK OF US</span>
+    <span class="private">PRIVATE EDITION · 01</span>
+  </header>
 
-
-<!-- =====================================================
-     BACKGROUND
-====================================================== -->
-
-<div class="background" id="background"></div>
-
-
-<div class="page">
-
-
-    <!-- =================================================
-         INTRO
-    ================================================== -->
-
-    <section id="intro">
-
-        <div class="intro-label">
-            UNWRITTEN MEMORIES
-        </div>
-
-        <h1 class="intro-title">
-            Things I Want To Do With You
-        </h1>
-
-        <p class="intro-text">
-            Some things haven't happened yet.
-            <br><br>
-            I still want to do them with you.
-        </p>
-
-        <div
-            class="open-memory"
-            onclick="openMemories()"
-        >
-            ✦
-        </div>
-
+  <main>
+    <section class="screen intro-screen" id="introScreen" aria-labelledby="introTitle">
+      <div class="eyebrow">UNWRITTEN MEMORIES</div>
+      <div class="intro-moon" aria-hidden="true"></div>
+      <h1 id="introTitle">Things I Want<br>To Do With You</h1>
+      <p class="intro-copy">Some things haven't happened yet.<br><br><em>I still want to do them with you.</em></p>
+      <button class="primary-button" id="openBookButton" type="button">Open the scrapbook <span class="button-arrow" aria-hidden="true">↗</span></button>
     </section>
 
-
-
-    <!-- =================================================
-         MEMORY AREA
-    ================================================== -->
-
-    <section id="memoryArea">
-
-
-        <div class="memory-header">
-
-            <div class="memory-label">
-                FUTURE MEMORIES
-            </div>
-
-            <h1 class="memory-title">
-                Things We Haven't Done Yet
-            </h1>
-
-            <div class="memory-subtitle">
-                SOME OF THESE MIGHT HAPPEN. SOME MIGHT NOT.
-            </div>
-
+    <section class="screen hidden" id="bookScreen" aria-labelledby="bookTitle">
+      <div class="book-heading">
+        <div>
+          <h2 id="bookTitle">Future memories</h2>
+          <p>Things we haven't done yet</p>
         </div>
-
-
-        <!-- =================================================
-             POSTCARD STAGE
-        ================================================== -->
-
-        <div
-            class="card-stage"
-            id="cardStage"
-        >
-
-        </div>
-
-
-        <!-- =================================================
-             CONTROLS
-        ================================================== -->
-
-        <div class="card-controls">
-
-            <button
-                class="next-card"
-                id="nextButton"
-                onclick="nextMemory()"
-            >
-                NEXT MEMORY →
-            </button>
-
-            <div
-                class="memory-counter"
-                id="counter"
-            >
-                MEMORY 01 / 08
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             FINAL MEMORY
-        ================================================== -->
-
-        <section id="finalMemory">
-
-            <div class="final-label">
-                ONE MORE THING
-            </div>
-
-            <h1 class="final-memory-title">
-                Make memories we haven't even thought of yet.
-            </h1>
-
-            <p class="final-memory-text">
-                I don't have a list of everything I want to do with you.
-                <br><br>
-                I think that's kind of the point.
-                <br><br>
-                There are still so many things we haven't done yet.
-            </p>
-
-            <a
-                class="final-star"
-                href="final.html"
-            >
-                ✦
-            </a>
-
-        </section>
-
-
+        <div class="page-counter" id="pageCounter" aria-live="polite">COVER</div>
+      </div>
+      <div class="book-frame">
+        <article class="book-page" id="bookPage" aria-live="polite" aria-atomic="true">
+          <div class="page-content" id="pageContent"></div>
+        </article>
+      </div>
+      <div class="nav-row">
+        <button class="nav-button" id="prevButton" type="button" disabled><span class="arrow" aria-hidden="true">←</span> Previous</button>
+        <div class="nav-hint" id="navHint">Turn the page slowly</div>
+        <button class="nav-button" id="nextButton" type="button">Begin <span class="arrow" aria-hidden="true">→</span></button>
+      </div>
+      <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+      <p class="visually-hidden" id="statusMessage" aria-live="polite"></p>
     </section>
-
+  </main>
+  <footer class="footer-note">MADE OF MAYBES, LITTLE PLANS, AND YOU</footer>
 </div>
 
-
-
 <script>
+/* ==========================================================
+   EASY EDIT SECTION
+   Change the title, message, caption, and note for each memory.
+   Keep the quotation marks and commas in place.
+   ========================================================== */
+const memories = [
+  {
+    title: "Stay up way too late talking",
+    message: "I want to know what we'd end up talking about at 2:00 in the morning.",
+    caption: "2:00 AM, someday",
+    note: "One more story. Then one more."
+  },
+  {
+    title: "Take stupid pictures together",
+    message: "The kind neither of us would ever post, but we'd keep anyway.",
+    caption: "Proof we were here",
+    note: "Blurry pictures count, obviously."
+  },
+  {
+    title: "Go somewhere neither of us has been",
+    message: "No huge plan. Just pick somewhere and see what happens.",
+    caption: "Somewhere new",
+    note: "Getting a little lost is allowed."
+  },
+  {
+    title: "Try food we've never had",
+    message: "Even if we both hate it afterward.",
+    caption: "A questionable decision",
+    note: "At least we'd have a story."
+  },
+  {
+    title: "Go skating together",
+    message: "I think it would be really funny watching you try to keep up with me.",
+    caption: "Try not to fall",
+    note: "I will try to be nice. Probably."
+  },
+  {
+    title: "Make something together",
+    message: "I don't even care what it is. I just think making something together would be fun.",
+    caption: "Made by us",
+    note: "It doesn't have to be perfect."
+  },
+  {
+    title: "Have one of those days where we do absolutely nothing",
+    message: "Just being somewhere together and somehow still having a good time.",
+    caption: "No plans at all",
+    note: "Quiet days can be good ones."
+  },
+  {
+    title: "Go somewhere far away someday",
+    message: "Maybe someday we'll look back and realize we actually did.",
+    caption: "A little farther",
+    note: "No rush. Someday is fine."
+  }
+];
 
-/* =========================================================
-   EDITABLE TEXT
-=========================================================
-
-   THIS IS THE ONLY SECTION YOU REALLY NEED TO EDIT.
-
-   Change the titles and messages here.
-
-========================================================= */
-
-const editableText = {
-
-    introLabel:
-        "UNWRITTEN MEMORIES",
-
-    introTitle:
-        "Things I Want To Do With You",
-
-    introText:
-        "Some things haven't happened yet.<br><br>I still want to do them with you.",
-
-
-    memoryLabel:
-        "FUTURE MEMORIES",
-
-    memoryTitle:
-        "Things We Haven't Done Yet",
-
-    memorySubtitle:
-        "SOME OF THESE MIGHT HAPPEN. SOME MIGHT NOT.",
-
-
-    memories: [
-
-        {
-            title:
-                "Stay up way too late talking",
-
-            text:
-                "I want to know what we'd end up talking about at 2:00 in the morning."
-        },
-
-
-        {
-            title:
-                "Take stupid pictures together",
-
-            text:
-                "The kind neither of us would ever post, but we'd keep anyway."
-        },
-
-
-        {
-            title:
-                "Go somewhere neither of us has been",
-
-            text:
-                "No huge plan. Just pick somewhere and see what happens."
-        },
-
-
-        {
-            title:
-                "Try food we've never had",
-
-            text:
-                "Even if we both hate it afterward."
-        },
-
-
-        {
-            title:
-                "Go skating together",
-
-            text:
-                "I think it would be really funny watching you try to keep up with me."
-        },
-
-
-        {
-            title:
-                "Make something together",
-
-            text:
-                "I don't even care what it is. I just think making something together would be fun."
-        },
-
-
-        {
-            title:
-                "Have one of those days where we do absolutely nothing",
-
-            text:
-                "Just being somewhere together and somehow still having a good time."
-        },
-
-
-        {
-            title:
-                "Go somewhere far away someday",
-
-            text:
-                "Maybe someday we'll look back and realize we actually did."
-        }
-
-    ],
-
-
-    finalLabel:
-        "ONE MORE THING",
-
-    finalTitle:
-        "Make memories we haven't even thought of yet.",
-
-    finalText:
-        "I don't have a list of everything I want to do with you.<br><br>I think that's kind of the point.<br><br>There are still so many things we haven't done yet."
-
+const ending = {
+  title: "Make memories we haven't even thought of yet.",
+  message: "I don't have a list of everything I want to do with you.\n\nI think that's kind of the point.\n\nThere are still so many things we haven't done yet.",
+  caption: "To be continued",
+  note: "The best parts aren't written yet."
 };
-
-
-/* =========================================================
-   VARIABLES
-========================================================= */
-
-let currentMemory = 0;
-
-let activeCard = null;
-
-let openedCards = 0;
-
-let isTransitioning = false;
-
-
-/* =========================================================
-   APPLY TEXT
-========================================================= */
-
-document.querySelector(".intro-label").innerHTML =
-    editableText.introLabel;
-
-document.querySelector(".intro-title").innerHTML =
-    editableText.introTitle;
-
-document.querySelector(".intro-text").innerHTML =
-    editableText.introText;
-
-document.querySelector(".memory-label").innerHTML =
-    editableText.memoryLabel;
-
-document.querySelector(".memory-title").innerHTML =
-    editableText.memoryTitle;
-
-document.querySelector(".memory-subtitle").innerHTML =
-    editableText.memorySubtitle;
-
-document.querySelector(".final-label").innerHTML =
-    editableText.finalLabel;
-
-document.querySelector(".final-memory-title").innerHTML =
-    editableText.finalTitle;
-
-document.querySelector(".final-memory-text").innerHTML =
-    editableText.finalText;
-
-
-/* =========================================================
-   CREATE DUST
-========================================================= */
-
-const background =
-    document.getElementById("background");
-
-for (let i = 0; i < 45; i++) {
-
-    const dust =
-        document.createElement("div");
-
-    dust.className = "dust";
-
-    dust.style.left =
-        Math.random() * 100 + "%";
-
-    dust.style.top =
-        Math.random() * 100 + "%";
-
-    dust.style.animationDuration =
-        (12 + Math.random() * 18) + "s";
-
-    dust.style.animationDelay =
-        (Math.random() * 15) + "s";
-
-    background.appendChild(dust);
-}
-
-
-/* =========================================================
-   OPEN MEMORIES
-========================================================= */
-
-function openMemories() {
-
-    const intro =
-        document.getElementById("intro");
-
-    const area =
-        document.getElementById("memoryArea");
-
-
-    intro.style.transition =
-        "opacity 1s ease, transform 1s ease, filter 1s ease";
-
-    intro.style.opacity = "0";
-
-    intro.style.transform =
-        "translateY(-25px)";
-
-    intro.style.filter =
-        "blur(8px)";
-
-
-    setTimeout(() => {
-
-        intro.style.display = "none";
-
-        area.classList.add("show");
-
-        createCards();
-
-    }, 1000);
-}
-
-
-/* =========================================================
-   CREATE ALL POSTCARDS
-========================================================= */
-
-function createCards() {
-
-    const stage =
-        document.getElementById("cardStage");
-
-    stage.innerHTML = "";
-
-
-    editableText.memories.forEach(
-        (memory, index) => {
-
-            const card =
-                document.createElement("div");
-
-            card.className = "postcard";
-
-
-            /* random but controlled positions */
-
-            const rotations = [
-                "-7deg",
-                "5deg",
-                "-3deg",
-                "8deg",
-                "-5deg",
-                "4deg",
-                "-8deg",
-                "3deg"
-            ];
-
-            const xPositions = [
-                "-90px",
-                "65px",
-                "-40px",
-                "85px",
-                "-75px",
-                "40px",
-                "-25px",
-                "70px"
-            ];
-
-            const yPositions = [
-                "-15px",
-                "25px",
-                "45px",
-                "-40px",
-                "60px",
-                "-50px",
-                "15px",
-                "-65px"
-            ];
-
-            const depths = [
-                "10px",
-                "20px",
-                "30px",
-                "40px",
-                "50px",
-                "60px",
-                "70px",
-                "80px"
-            ];
-
-
-            card.style.setProperty(
-                "--rotation",
-                rotations[index]
-            );
-
-            card.style.setProperty(
-                "--x",
-                xPositions[index]
-            );
-
-            card.style.setProperty(
-                "--y",
-                yPositions[index]
-            );
-
-            card.style.setProperty(
-                "--depth",
-                depths[index]
-            );
-
-
-            /* =================================================
-               CARD INNER
-            ================================================= */
-
-            card.innerHTML = `
-
-                <div class="card-inner">
-
-
-                    <div class="paper card-front">
-
-                        <div class="card-number">
-                            FUTURE MEMORY #${String(index + 1).padStart(2, "0")}
-                        </div>
-
-                        <div class="card-front-title">
-                            ${memory.title}
-                        </div>
-
-                        <div class="card-hint">
-                            CLICK TO OPEN
-                        </div>
-
-                        <div class="card-mark">
-                            ✦
-                        </div>
-
-                    </div>
-
-
-                    <div class="paper card-back">
-
-                        <div class="back-top">
-
-                            <span>
-                                MEMORY #${String(index + 1).padStart(2, "0")}
-                            </span>
-
-                            <span>
-                                ✦
-                            </span>
-
-                        </div>
-
-
-                        <div
-                            class="back-message"
-                            data-message="${index}"
-                        >
-                            ${memory.text}
-                        </div>
-
-
-                        <div class="back-bottom">
-                            SOMETHING I WANT TO REMEMBER
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-            `;
-
-
-            card.addEventListener(
-                "click",
-                () => openCard(card, index)
-            );
-
-
-            stage.appendChild(card);
-
+/* ======================= END EDIT SECTION ================== */
+
+(() => {
+  "use strict";
+
+  const introScreen = document.getElementById("introScreen");
+  const bookScreen = document.getElementById("bookScreen");
+  const openBookButton = document.getElementById("openBookButton");
+  const pageContent = document.getElementById("pageContent");
+  const pageCounter = document.getElementById("pageCounter");
+  const prevButton = document.getElementById("prevButton");
+  const nextButton = document.getElementById("nextButton");
+  const navHint = document.getElementById("navHint");
+  const progressFill = document.getElementById("progressFill");
+  const statusMessage = document.getElementById("statusMessage");
+  const starscape = document.getElementById("starscape");
+
+  // -1 is the cover, 0–7 are memories, 8 is the ending.
+  let currentPage = -1;
+  let isTurning = false;
+  let turnFallback = null;
+  const reducedMotion = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  for (let i = 0; i < 58; i++) {
+    const star = document.createElement("span");
+    star.className = "star-dot";
+    star.style.left = `${(i * 37 + 11) % 100}%`;
+    star.style.top = `${(i * 61 + 7) % 100}%`;
+    star.style.setProperty("--duration", `${3 + (i % 5)}s`);
+    star.style.setProperty("--delay", `${-(i % 7)}s`);
+    if (i % 4 === 0) {
+      star.style.width = "3px";
+      star.style.height = "3px";
+    }
+    starscape.appendChild(star);
+  }
+
+  function makeElement(tag, className, text) {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    if (text !== undefined) element.textContent = text;
+    return element;
+  }
+
+  function addMeta(container, left, right) {
+    const meta = makeElement("div", "page-meta");
+    meta.appendChild(makeElement("span", "", left));
+    meta.appendChild(makeElement("span", "tiny-star", right || "✦"));
+    container.appendChild(meta);
+  }
+
+  function renderCover(container) {
+    container.classList.add("end-page");
+    addMeta(container, "A SMALL COLLECTION", "✦");
+    const moon = makeElement("div", "end-moon");
+    moon.setAttribute("aria-hidden", "true");
+    container.appendChild(moon);
+    container.appendChild(makeElement("h3", "end-title", "Things we haven't done yet."));
+    container.appendChild(makeElement("p", "end-copy",
+      "A little collection of places we might go, things we might try, and ordinary days I hope to share with you."));
+    container.appendChild(makeElement("p", "hand-note", "No deadlines. Just possibilities."));
+    const bottom = makeElement("div", "page-bottom");
+    bottom.style.width = "100%";
+    bottom.style.marginTop = "auto";
+    bottom.appendChild(makeElement("span", "", "OPEN WHEN READY"));
+    bottom.appendChild(makeElement("span", "handwritten", "page 00"));
+    container.appendChild(bottom);
+  }
+
+  function renderMemory(container, memory, index) {
+    const tape = makeElement("div", "tape");
+    tape.setAttribute("aria-hidden", "true");
+    container.appendChild(tape);
+    addMeta(container, "FUTURE MEMORY · " + String(index + 1).padStart(2, "0"), "✧");
+
+    const layout = makeElement("div", "page-layout");
+    const textColumn = makeElement("div", "memory-text");
+    textColumn.appendChild(makeElement("div", "memory-index", "A THING I HOPE WE DO"));
+    textColumn.appendChild(makeElement("h3", "memory-title", memory.title));
+    textColumn.appendChild(makeElement("p", "memory-body", memory.message));
+    textColumn.appendChild(makeElement("p", "hand-note", memory.note));
+
+    const photo = makeElement("div", "photo-placeholder");
+    photo.style.setProperty("--tilt", index % 2 === 0 ? "2.2deg" : "-2.2deg");
+    photo.setAttribute("role", "img");
+    photo.setAttribute("aria-label", "Decorative moonlit scrapbook illustration: " + memory.caption);
+    const art = makeElement("div", "photo-art");
+    art.setAttribute("aria-hidden", "true");
+    art.appendChild(makeElement("span", "orbit", ""));
+    art.appendChild(makeElement("span", "art-caption", "A FUTURE MEMORY"));
+    photo.appendChild(art);
+    photo.appendChild(makeElement("div", "polaroid-caption", memory.caption));
+
+    layout.appendChild(textColumn);
+    layout.appendChild(photo);
+    container.appendChild(layout);
+
+    const bottom = makeElement("div", "page-bottom");
+    bottom.appendChild(makeElement("span", "", "SOMEWHERE IN OUR FUTURE"));
+    bottom.appendChild(makeElement("span", "handwritten", "page " + String(index + 1).padStart(2, "0")));
+    container.appendChild(bottom);
+  }
+
+  function renderEnding(container) {
+    container.classList.add("end-page");
+    addMeta(container, "ONE MORE THING", "✦");
+    const moon = makeElement("div", "end-moon");
+    moon.setAttribute("aria-hidden", "true");
+    container.appendChild(moon);
+    container.appendChild(makeElement("h3", "end-title", ending.title));
+    container.appendChild(makeElement("p", "end-copy", ending.message));
+    container.appendChild(makeElement("p", "hand-note", ending.note));
+
+    const link = makeElement("a", "final-link", "One last page");
+    link.href = "final.html";
+    const arrow = makeElement("span", "", "↗");
+    arrow.setAttribute("aria-hidden", "true");
+    link.appendChild(arrow);
+    container.appendChild(link);
+
+    const bottom = makeElement("div", "page-bottom");
+    bottom.style.width = "100%";
+    bottom.style.marginTop = "auto";
+    bottom.appendChild(makeElement("span", "", "TO BE CONTINUED"));
+    bottom.appendChild(makeElement("span", "handwritten", "page 09"));
+    container.appendChild(bottom);
+  }
+
+  function renderPage(animate) {
+    pageContent.replaceChildren();
+    pageContent.className = "page-content";
+
+    if (currentPage === -1) {
+      renderCover(pageContent);
+      pageCounter.textContent = "COVER";
+      prevButton.disabled = true;
+      nextButton.disabled = false;
+      nextButton.innerHTML = 'Begin <span class="arrow" aria-hidden="true">→</span>';
+      navHint.textContent = "A few things I hope for";
+      progressFill.style.width = "0%";
+    } else if (currentPage >= 0 && currentPage < memories.length) {
+      renderMemory(pageContent, memories[currentPage], currentPage);
+      pageCounter.textContent = String(currentPage + 1).padStart(2, "0") +
+        " / " + String(memories.length).padStart(2, "0");
+      prevButton.disabled = false;
+      nextButton.disabled = false;
+      nextButton.innerHTML = currentPage === memories.length - 1
+        ? 'Last page <span class="arrow" aria-hidden="true">→</span>'
+        : 'Next page <span class="arrow" aria-hidden="true">→</span>';
+      navHint.textContent = "Turn the page slowly";
+      progressFill.style.width = `${((currentPage + 1) / (memories.length + 1)) * 100}%`;
+    } else {
+      renderEnding(pageContent);
+      pageCounter.textContent = "THE END? / 09";
+      prevButton.disabled = false;
+      nextButton.disabled = true;
+      nextButton.innerHTML = 'Finished <span class="arrow" aria-hidden="true">✦</span>';
+      navHint.textContent = "One more thing, if you want";
+      progressFill.style.width = "100%";
+    }
+
+    if (turnFallback) {
+      window.clearTimeout(turnFallback);
+      turnFallback = null;
+    }
+
+    if (animate && !reducedMotion) {
+      pageContent.classList.add("page-turning");
+      let finished = false;
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        pageContent.classList.remove("page-turning");
+        isTurning = false;
+        if (turnFallback) {
+          window.clearTimeout(turnFallback);
+          turnFallback = null;
         }
-    );
-
-
-    updateCounter();
-}
-
-
-/* =========================================================
-   OPEN A CARD
-========================================================= */
-
-function openCard(card, index) {
-
-    if (isTransitioning) {
-        return;
+      };
+      pageContent.addEventListener("animationend", finish, { once: true });
+      turnFallback = window.setTimeout(finish, 750);
+    } else {
+      isTurning = false;
     }
 
+    statusMessage.textContent = currentPage === -1
+      ? "Scrapbook cover"
+      : currentPage < memories.length
+        ? `Memory ${currentPage + 1} of ${memories.length}: ${memories[currentPage].title}`
+        : "Final scrapbook page";
+  }
 
-    /* If another card is open, ignore click */
+  function turnPage(direction) {
+    if (isTurning) return;
+    const nextPage = Math.max(-1, Math.min(memories.length, currentPage + direction));
+    if (nextPage === currentPage) return;
+    currentPage = nextPage;
+    isTurning = !reducedMotion;
+    renderPage(true);
+  }
 
-    if (
-        activeCard &&
-        activeCard !== card
-    ) {
-        return;
+  openBookButton.addEventListener("click", () => {
+    introScreen.classList.add("hidden");
+    bookScreen.classList.remove("hidden");
+    currentPage = -1;
+    renderPage(false);
+    nextButton.focus();
+  });
+
+  prevButton.addEventListener("click", () => turnPage(-1));
+  nextButton.addEventListener("click", () => turnPage(1));
+
+  document.addEventListener("keydown", (event) => {
+    if (bookScreen.classList.contains("hidden")) return;
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    if (event.key === "ArrowLeft" && !prevButton.disabled) {
+      event.preventDefault();
+      turnPage(-1);
+    } else if (event.key === "ArrowRight" && !nextButton.disabled) {
+      event.preventDefault();
+      turnPage(1);
     }
+  });
 
-
-    /* =====================================================
-       FIRST CLICK
-    ===================================================== */
-
-    if (!card.classList.contains("flipped")) {
-
-        isTransitioning = true;
-
-        activeCard = card;
-
-        cardStage.classList.add("has-active");
-
-        card.classList.add("active");
-
-        card.classList.add("opening");
-
-
-        /* Wait until card physically rises */
-
-        setTimeout(() => {
-
-            card.classList.remove("opening");
-
-            card.classList.add("flipped");
-
-        }, 650);
-
-
-        /* Reveal next button */
-
-        setTimeout(() => {
-
-            document
-                .getElementById("nextButton")
-                .classList.add("show");
-
-            isTransitioning = false;
-
-        }, 1400);
-
-
-        openedCards++;
-
-
-        return;
-    }
-
-}
-
-
-/* =========================================================
-   NEXT MEMORY
-========================================================= */
-
-function nextMemory() {
-
-    if (isTransitioning) {
-        return;
-    }
-
-
-    isTransitioning = true;
-
-
-    const stage =
-        document.getElementById("cardStage");
-
-    const button =
-        document.getElementById("nextButton");
-
-
-    /* =====================================================
-       IF LAST CARD
-    ===================================================== */
-
-    if (
-        currentMemory >=
-        editableText.memories.length - 1
-    ) {
-
-        button.style.opacity = "0";
-
-        gatherCards();
-
-        return;
-    }
-
-
-    /* =====================================================
-       CLOSE CURRENT CARD
-    ===================================================== */
-
-    if (activeCard) {
-
-        activeCard.classList.remove("flipped");
-
-        activeCard.classList.remove("active");
-
-    }
-
-
-    stage.classList.remove("has-active");
-
-
-    /* =====================================================
-       BUTTON FADES
-    ===================================================== */
-
-    button.style.transition =
-        "opacity 0.4s ease";
-
-    button.style.opacity = "0";
-
-
-    setTimeout(() => {
-
-        button.classList.remove("show");
-
-        button.style.opacity = "1";
-
-
-        currentMemory++;
-
-        activeCard = null;
-
-        updateCounter();
-
-
-        /* =================================================
-           BRING NEXT CARD FORWARD
-        ================================================= */
-
-        const cards =
-            document.querySelectorAll(".postcard");
-
-        const nextCard =
-            cards[currentMemory];
-
-
-        if (nextCard) {
-
-            /* little anticipation */
-
-            nextCard.style.transition =
-                "transform 1.2s cubic-bezier(.16,1,.3,1), opacity 0.8s ease";
-
-            nextCard.style.transform =
-                `
-                translate(-50%, -50%)
-                rotate(${nextCard.style.getPropertyValue("--rotation")})
-                translate3d(${nextCard.style.getPropertyValue("--x")}, ${nextCard.style.getPropertyValue("--y")}, ${nextCard.style.getPropertyValue("--depth")})
-                scale(1.03)
-                `;
-
-
-            setTimeout(() => {
-
-                nextCard.style.transform = "";
-
-            }, 100);
-        }
-
-
-        isTransitioning = false;
-
-    }, 500);
-}
-
-
-/* =========================================================
-   UPDATE COUNTER
-========================================================= */
-
-function updateCounter() {
-
-    const counter =
-        document.getElementById("counter");
-
-    counter.innerHTML =
-        "MEMORY " +
-        String(currentMemory + 1).padStart(2, "0") +
-        " / " +
-        String(editableText.memories.length).padStart(2, "0");
-}
-
-
-/* =========================================================
-   GATHER ALL MEMORIES
-========================================================= */
-
-function gatherCards() {
-
-    const stage =
-        document.getElementById("cardStage");
-
-    const controls =
-        document.querySelector(".card-controls");
-
-    const cards =
-        document.querySelectorAll(".postcard");
-
-
-    /* =====================================================
-       REMOVE ACTIVE STATE
-    ===================================================== */
-
-    if (activeCard) {
-
-        activeCard.classList.remove("active");
-
-        activeCard.classList.remove("flipped");
-
-    }
-
-
-    stage.classList.remove("has-active");
-
-
-    /* =====================================================
-       START GATHERING
-    ===================================================== */
-
-    stage.classList.add("gathering");
-
-
-    /* Hide counter */
-
-    controls.style.transition =
-        "opacity 1s ease";
-
-    controls.style.opacity = "0";
-
-
-    /* =====================================================
-       WAIT FOR CARDS TO ARRANGE
-    ===================================================== */
-
-    setTimeout(() => {
-
-        cards.forEach((card, index) => {
-
-            card.style.pointerEvents =
-                "none";
-
-            card.style.filter =
-                "brightness(0.75)";
-
-        });
-
-    }, 700);
-
-
-    /* =====================================================
-       FADE CARDS
-    ===================================================== */
-
-    setTimeout(() => {
-
-        cards.forEach(card => {
-
-            card.style.opacity =
-                "0.55";
-
-        });
-
-    }, 1500);
-
-
-    /* =====================================================
-       SHOW FINAL MEMORY
-    ===================================================== */
-
-    setTimeout(() => {
-
-        stage.style.transition =
-            "opacity 1.4s ease, transform 1.4s ease";
-
-        stage.style.opacity =
-            "0";
-
-        stage.style.transform =
-            "scale(0.94)";
-
-    }, 2300);
-
-
-    setTimeout(() => {
-
-        stage.style.display =
-            "none";
-
-        controls.style.display =
-            "none";
-
-
-        document
-            .getElementById("finalMemory")
-            .classList.add("show");
-
-    }, 3600);
-
-}
-
+  renderPage(false);
+})();
 </script>
-
 </body>
 </html>
+
