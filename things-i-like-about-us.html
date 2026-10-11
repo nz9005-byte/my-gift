@@ -1,1162 +1,213 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#070709">
 <title>Things I Like About Us</title>
-
 <style>
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    background: #000;
-    color: white;
-    font-family: Georgia, "Times New Roman", serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-}
-
-.hidden {
-    display: none !important;
-}
-
-
-/* =========================================
-   INTRO
-========================================= */
-
-#introScreen {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    text-align: center;
-}
-
-.intro-container {
-    max-width: 600px;
-    animation: fadeIn 1.5s ease;
-}
-
-.intro-title {
-    font-size: 42px;
-    letter-spacing: 2px;
-    margin-bottom: 30px;
-}
-
-.intro-text {
-    font-size: 18px;
-    line-height: 1.9;
-    color: #ccc;
-}
-
-.intro-star {
-    display: inline-block;
-    margin-top: 50px;
-    font-size: 48px;
-    cursor: pointer;
-    transition: 0.4s ease;
-}
-
-.intro-star:hover {
-    transform: scale(1.3);
-    text-shadow: 0 0 25px white;
-}
-
-
-/* =========================================
-   CONSTELLATION SCREEN
-========================================= */
-
-#constellationScreen {
-    display: none;
-    min-height: 100vh;
-    padding: 30px 20px 60px;
-    text-align: center;
-}
-
-.constellation-header {
-    max-width: 650px;
-    margin: 0 auto 20px;
-}
-
-.constellation-title {
-    font-size: 34px;
-    margin-bottom: 15px;
-}
-
-.constellation-subtitle {
-    color: #999;
-    font-size: 15px;
-    line-height: 1.7;
-}
-
-.progress {
-    margin-top: 20px;
-    font-family: Arial, sans-serif;
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: #777;
-}
-
-
-/* =========================================
-   STAR FIELD
-========================================= */
-
-.constellation-area {
-    position: relative;
-    width: 100%;
-    max-width: 750px;
-    height: 500px;
-    margin: 35px auto 0;
-    border-top: 1px solid #222;
-    border-bottom: 1px solid #222;
-    overflow: hidden;
-}
-
-
-/* SVG is behind the stars */
-
-#constellationLines {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: visible;
-}
-
-.constellation-line {
-    stroke: white;
-    stroke-width: 1;
-    fill: none;
-    opacity: 0;
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-}
-
-.constellation-line.draw {
-    opacity: 0.75;
-    animation: drawLine 1.2s ease forwards;
-}
-
-
-/* =========================================
-   STARS
-========================================= */
-
-.constellation-star {
-    position: absolute;
-    width: 48px;
-    height: 48px;
-
-    border: none;
-    background: transparent;
-    color: white;
-
-    font-size: 28px;
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    transform: translate(-50%, -50%);
-
-    transition:
-        transform 0.35s ease,
-        text-shadow 0.35s ease,
-        opacity 0.35s ease;
-
-    z-index: 5;
-}
-
-.constellation-star:hover {
-    transform: translate(-50%, -50%) scale(1.25);
-    text-shadow: 0 0 20px white;
-}
-
-.constellation-star.selected {
-    transform: translate(-50%, -50%) scale(1.35);
-    text-shadow:
-        0 0 8px white,
-        0 0 20px white,
-        0 0 35px white;
-}
-
-.constellation-star.connected {
-    text-shadow:
-        0 0 8px white,
-        0 0 18px white;
-}
-
-
-/* Star positions */
-
-.star-1 {
-    left: 18%;
-    top: 24%;
-}
-
-.star-2 {
-    left: 43%;
-    top: 16%;
-}
-
-.star-3 {
-    left: 72%;
-    top: 25%;
-}
-
-.star-4 {
-    left: 28%;
-    top: 53%;
-}
-
-.star-5 {
-    left: 61%;
-    top: 48%;
-}
-
-.star-6 {
-    left: 84%;
-    top: 60%;
-}
-
-.star-7 {
-    left: 43%;
-    top: 77%;
-}
-
-.star-8 {
-    left: 72%;
-    top: 82%;
-}
-
-
-/* =========================================
-   INSTRUCTION
-========================================= */
-
-.instruction {
-    margin-top: 25px;
-    font-family: Arial, sans-serif;
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: #777;
-    min-height: 20px;
-}
-
-
-/* =========================================
-   REVEAL MESSAGE
-========================================= */
-
-#messageBox {
-    max-width: 600px;
-    margin: 40px auto 0;
-
-    opacity: 0;
-    transform: translateY(15px);
-
-    transition:
-        opacity 0.8s ease,
-        transform 0.8s ease;
-}
-
-#messageBox.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.message-label {
-    font-family: Arial, sans-serif;
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: #777;
-    margin-bottom: 15px;
-}
-
-.message-title {
-    font-size: 28px;
-    margin-bottom: 15px;
-}
-
-.message-text {
-    font-size: 17px;
-    line-height: 1.8;
-    color: #ccc;
-}
-
-
-/* =========================================
-   FINAL CONSTELLATION
-========================================= */
-
-#finalScreen {
-    display: none;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 30px;
-}
-
-.final-container {
-    max-width: 650px;
-    animation: fadeIn 1.5s ease;
-}
-
-.final-small {
-    font-family: Arial, sans-serif;
-    font-size: 10px;
-    letter-spacing: 4px;
-    color: #777;
-    margin-bottom: 25px;
-}
-
-.final-title {
-    font-size: 38px;
-    margin-bottom: 30px;
-}
-
-.final-text {
-    font-size: 18px;
-    line-height: 2;
-    color: #ccc;
-}
-
-.final-star {
-    display: inline-block;
-    margin-top: 50px;
-
-    color: white;
-    text-decoration: none;
-    font-size: 46px;
-
-    transition: 0.4s ease;
-}
-
-.final-star:hover {
-    transform: scale(1.3);
-    text-shadow: 0 0 25px white;
-}
-
-
-/* =========================================
-   ANIMATIONS
-========================================= */
-
-@keyframes fadeIn {
-
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-
-}
-
-@keyframes drawLine {
-
-    from {
-        stroke-dashoffset: 1000;
-    }
-
-    to {
-        stroke-dashoffset: 0;
-    }
-
-}
-
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media (max-width: 600px) {
-
-    .intro-title {
-        font-size: 32px;
-    }
-
-    .constellation-title {
-        font-size: 28px;
-    }
-
-    .constellation-area {
-        height: 430px;
-    }
-
-    .constellation-star {
-        font-size: 25px;
-    }
-
-    .message-title {
-        font-size: 24px;
-    }
-
-    .final-title {
-        font-size: 31px;
-    }
-
-}
-
+:root{color-scheme:dark;--bg:#070709;--paper:#f1efe9;--muted:#aaa7b3;--line:rgba(239,237,246,.2);--serif:Georgia,"Times New Roman",serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box}html{background:var(--bg);scroll-behavior:smooth}body{margin:0;min-height:100vh;background:var(--bg);color:var(--paper);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}button{font:inherit}button:focus-visible{outline:2px solid var(--paper);outline-offset:5px}::selection{background:#e9e5f4;color:#070709}
+.grain{position:fixed;inset:-50%;width:200%;height:200%;z-index:20;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");animation:grain .22s steps(2) infinite}
+.vignette{position:fixed;inset:0;z-index:19;pointer-events:none;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.55) 100%)}
+.topline{position:fixed;top:0;left:0;right:0;z-index:15;display:flex;justify-content:space-between;padding:17px clamp(18px,5vw,64px);color:var(--muted);font-size:9px;letter-spacing:.2em;text-transform:uppercase;pointer-events:none}
+.screen{position:relative;min-height:100svh;display:grid;place-items:center;padding:85px 22px 75px;isolation:isolate}.intro{text-align:center;overflow:hidden}
+.moon{width:min(48vw,220px);aspect-ratio:1;margin:0 auto 28px;position:relative;display:grid;place-items:center}.orbit,.halo,.moon-core{position:absolute;border-radius:50%}.orbit{inset:1%;border:1px solid rgba(232,230,243,.18);animation:spin 28s linear infinite}.orbit:before,.orbit:after{content:"";position:absolute;width:5px;height:5px;border-radius:50%;background:#f1efe9;box-shadow:0 0 15px #aaa8b2}.orbit:before{left:17%;top:17%}.orbit:after{right:6%;bottom:36%;width:3px;height:3px}.halo{width:70%;height:70%;border:1px solid rgba(238,236,246,.12);animation:breathe 5s ease-in-out infinite}.moon-core{width:48%;height:48%;overflow:hidden;background:radial-gradient(circle at 31% 28%,#fff 0,#e3e0eb 26%,#aaa7b4 58%,#5b5964 100%);box-shadow:0 0 36px rgba(225,221,239,.15),inset -12px -10px 20px rgba(0,0,0,.42);animation:float 6s ease-in-out infinite}.crater{position:absolute;border-radius:50%;background:rgba(63,61,73,.22);box-shadow:inset 2px 2px 4px rgba(0,0,0,.16)}.c1{width:18%;height:18%;left:23%;top:29%}.c2{width:12%;height:12%;right:22%;top:23%}.c3{width:23%;height:23%;right:22%;bottom:20%}.c4{width:9%;height:9%;left:26%;bottom:19%}
+.kicker,.eyebrow{color:var(--muted);font-size:9px;letter-spacing:.27em;text-transform:uppercase;line-height:1.8}h1,h2,p{margin-top:0}.intro h1{margin:15px 0 13px;font:400 clamp(36px,7vw,74px)/1.06 var(--serif);letter-spacing:-.045em}.subtitle{color:#b8b5c0;font:italic 16px/1.7 var(--serif)}
+.action{border:1px solid rgba(238,236,246,.36);background:rgba(255,255,255,.025);color:var(--paper);padding:15px 21px;min-height:48px;cursor:pointer;letter-spacing:.17em;text-transform:uppercase;font-size:9px;transition:background .3s,color .3s,border-color .3s,transform .3s}.action:hover{background:var(--paper);color:var(--bg);border-color:var(--paper);transform:translateY(-2px)}.start{margin-top:25px}.tiny{margin:17px 0 0;color:#666570;font-size:10px;letter-spacing:.08em}
+.scene,.ending{display:none;text-align:center;overflow:hidden}.scene.active,.ending.active{display:grid;animation:sceneIn 1.1s both}.inner{width:min(100%,760px);margin:auto}.number{color:#666570;font-size:9px;letter-spacing:.25em;margin-bottom:10px}.scene h2,.ending h2{font:400 clamp(34px,6vw,60px)/1.12 var(--serif);letter-spacing:-.035em;margin:8px 0 18px}.description{color:#b7b4bf;max-width:520px;margin:0 auto;font:16px/1.85 var(--serif)}
+.symbol-stage{width:min(64vw,330px);aspect-ratio:1;margin:0 auto 28px;position:relative;display:grid;place-items:center;isolation:isolate}.symbol-stage:before{content:"";position:absolute;inset:8%;border:1px solid rgba(231,228,243,.12);border-radius:50%;animation:breathe 6s ease-in-out infinite}.symbol-stage:after{content:"";position:absolute;inset:19%;border:1px dashed rgba(231,228,243,.12);border-radius:50%;animation:spin 42s linear infinite}.symbol-svg{width:72%;height:72%;overflow:visible;z-index:1}.stroke{fill:none;stroke:#e9e6f1;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}.dim{stroke:#777581}.dot{fill:#f3f0f8}.glow{filter:drop-shadow(0 0 7px rgba(239,236,250,.6))}
+.symbol-button{position:absolute;z-index:3;inset:0;width:100%;height:100%;border:0;background:transparent;color:inherit;cursor:pointer;border-radius:50%}.symbol-button:focus-visible{outline-offset:-3px}.symbol-button:after{content:"CLICK TO REVEAL";position:absolute;bottom:2%;left:50%;transform:translateX(-50%);white-space:nowrap;color:#b9b6c2;font-size:8px;letter-spacing:.22em;opacity:.8}.symbol-button.revealed:after{content:"REVEALED"}
+.hint{margin:22px 0 0;color:#7d7a86;font-size:10px;letter-spacing:.12em}.reveal{max-width:540px;margin:0 auto;min-height:112px;padding:20px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);opacity:0;transform:translateY(12px);transition:opacity .7s,transform .7s}.reveal.visible{opacity:1;transform:translateY(0)}.reveal-label{color:#8f8c98;font-size:8px;letter-spacing:.24em;margin-bottom:12px}.reveal-text{font:italic clamp(17px,3vw,21px)/1.7 var(--serif);margin:0}
+.controls{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:27px;flex-wrap:wrap}.action:disabled{opacity:.28;cursor:not-allowed;transform:none}.skip{border:0;background:transparent;color:#8c8994;cursor:pointer;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:14px}.skip:hover{color:var(--paper)}
+.timeline-wrap{position:fixed;z-index:16;left:0;right:0;bottom:0;padding:12px clamp(18px,5vw,64px) 16px;background:linear-gradient(transparent,rgba(0,0,0,.75))}.timeline-wrap[hidden]{display:none}.timeline-labels{display:flex;justify-content:space-between;gap:12px;color:#8f8c98;font-size:8px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px}.timeline{height:2px;background:rgba(230,227,240,.18);overflow:hidden}.fill{width:0;height:100%;background:#eae7f2;transition:width 1s ease}
+.end-symbol{width:min(58vw,300px);aspect-ratio:1;margin:0 auto 30px}.ending h2{max-width:760px;margin:15px auto 22px}.end-copy{color:#c1bec8;font:17px/1.9 var(--serif);max-width:520px;margin:0 auto}.credits{margin-top:38px;color:#77747f;font-size:9px;letter-spacing:.23em;line-height:2;text-transform:uppercase}.ending .action{margin-top:26px}
+.flash{position:fixed;inset:0;background:#f5f2fa;opacity:0;pointer-events:none;z-index:30}.flash.play{animation:flash .55s ease-out}
+@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-1%,1%)}50%{transform:translate(1%,-1%)}75%{transform:translate(-1%,-1%)}100%{transform:translate(1%,1%)}}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes breathe{0%,100%{transform:scale(.96);opacity:.5}50%{transform:scale(1.04);opacity:1}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}@keyframes sceneIn{from{opacity:0;filter:blur(6px);transform:scale(1.015)}to{opacity:1;filter:blur(0);transform:scale(1)}}@keyframes flash{0%{opacity:0}10%{opacity:.13}100%{opacity:0}}
+@media(max-width:520px){.screen{padding-left:18px;padding-right:18px}.moon{width:min(56vw,200px)}.symbol-stage{width:min(76vw,290px);margin-bottom:22px}.description{font-size:15px}.reveal{padding:17px 12px;min-height:105px}.topline{font-size:8px;letter-spacing:.13em}.timeline-labels{font-size:7px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 </style>
 </head>
-
-
 <body>
+<div class="grain" aria-hidden="true"></div><div class="vignette" aria-hidden="true"></div><div class="flash" id="flash" aria-hidden="true"></div>
+<div class="topline" aria-hidden="true"><span id="topLeft">A FILM IN FOUR SCENES</span><span>NO. 001 · PRIVATE SCREENING</span></div>
+<main>
+<section class="screen intro" id="intro" aria-labelledby="mainTitle">
+  <div>
+    <div class="moon" aria-hidden="true"><div class="orbit"></div><div class="halo"></div><div class="moon-core"><i class="crater c1"></i><i class="crater c2"></i><i class="crater c3"></i><i class="crater c4"></i></div></div>
+    <div class="kicker">A SMALL FILM ABOUT SOMETHING REAL</div>
+    <h1 id="mainTitle">things i like<br>about us</h1><p class="subtitle">a story that is still happening</p>
+    <button class="action start" id="playButton" type="button">▶ &nbsp; Press play</button>
+    <p class="tiny">NO PHOTOGRAPHS. JUST A FEW THINGS I MEAN.</p>
+  </div>
+</section>
 
+<section class="screen scene" id="scene0" aria-labelledby="title0"><div class="inner">
+  <div class="number">SCENE I · 01 / 04</div><div class="symbol-stage">
+  <svg class="symbol-svg" viewBox="0 0 240 240" aria-hidden="true"><circle class="stroke dim" cx="120" cy="120" r="76" stroke-dasharray="2 9"/><ellipse class="stroke" cx="120" cy="120" rx="68" ry="29" transform="rotate(-35 120 120)"/><ellipse class="stroke dim" cx="120" cy="120" rx="50" ry="80" transform="rotate(48 120 120)"/><circle class="dot glow" cx="70" cy="92" r="5"><animate attributeName="r" values="4;6;4" dur="2.8s" repeatCount="indefinite"/></circle><circle class="dot" cx="166" cy="145" r="4"><animate attributeName="r" values="3;5;3" dur="2.3s" repeatCount="indefinite"/></circle><circle class="dot" cx="120" cy="120" r="2.5"/><path class="stroke dim" d="M70 92 Q112 65 166 145" stroke-dasharray="4 6"/></svg>
+  <button class="symbol-button" type="button" data-reveal="0" aria-label="Reveal the Comedy scene" aria-pressed="false"></button></div>
+  <div class="eyebrow">CHAPTER ONE</div><h2 id="title0">The Comedy</h2><p class="description">The teasing. The jokes. The conversations that somehow make absolutely no sense.</p><p class="hint">SOME OF MY FAVORITE MOMENTS ARE THE SILLY ONES.</p>
+  <div class="reveal" id="reveal0" aria-live="polite"><div class="reveal-label">A THING I LIKE ABOUT US</div><p class="reveal-text">Somehow, you make being ridiculous feel like one of my favorite things.</p></div>
+  <div class="controls"><button class="action" type="button" data-next="1" disabled>Next scene ↗</button><button class="skip" type="button" data-skip="1">Skip scene</button></div>
+</div></section>
 
-<!-- =====================================================
-     EDITABLE TEXT
-     
-     THIS IS THE MAIN SECTION YOU EDIT.
-     YOU SHOULD NOT NEED TO SEARCH THROUGH THE REST
-     OF THE CODE TO CHANGE YOUR WORDING.
-===================================================== -->
+<section class="screen scene" id="scene1" aria-labelledby="title1"><div class="inner">
+  <div class="number">SCENE II · 02 / 04</div><div class="symbol-stage">
+  <svg class="symbol-svg" viewBox="0 0 240 240" aria-hidden="true"><circle class="stroke dim" cx="120" cy="120" r="83"/><circle class="stroke" cx="120" cy="120" r="63" stroke-dasharray="1 7"/><circle class="stroke" cx="120" cy="120" r="43"><animate attributeName="r" values="40;47;40" dur="5s" repeatCount="indefinite"/></circle><circle class="dot glow" cx="120" cy="120" r="4"/><circle class="dot" cx="120" cy="57" r="3"/><path class="stroke dim" d="M120 57 V34 M120 183 V206 M57 120 H34 M183 120 H206"/></svg>
+  <button class="symbol-button" type="button" data-reveal="1" aria-label="Reveal the Quiet Parts scene" aria-pressed="false"></button></div>
+  <div class="eyebrow">CHAPTER TWO</div><h2 id="title1">The Quiet Parts</h2><p class="description">The moments when we don't have to make everything exciting. Sometimes being there is enough.</p><p class="hint">NOT EVERY MOMENT NEEDS TO BE LOUD TO MATTER.</p>
+  <div class="reveal" id="reveal1" aria-live="polite"><div class="reveal-label">A THING I LIKE ABOUT US</div><p class="reveal-text">I like that not every moment has to become a memory for it to matter.</p></div>
+  <div class="controls"><button class="action" type="button" data-next="2" disabled>Next scene ↗</button><button class="skip" type="button" data-skip="2">Skip scene</button></div>
+</div></section>
+
+<section class="screen scene" id="scene2" aria-labelledby="title2"><div class="inner">
+  <div class="number">SCENE III · 03 / 04</div><div class="symbol-stage">
+  <svg class="symbol-svg" viewBox="0 0 240 240" aria-hidden="true"><path class="stroke dim" d="M32 171 L76 122 L111 146 L153 78 L207 109" stroke-dasharray="3 7"/><path class="stroke" d="M32 171 L76 122 L111 146 L153 78 L207 109" stroke-dasharray="260"><animate attributeName="stroke-dashoffset" values="260;0;260" dur="7s" repeatCount="indefinite"/></path><circle class="dot glow" cx="76" cy="122" r="5"/><circle class="dot" cx="153" cy="78" r="4"/><circle class="dot" cx="207" cy="109" r="3"/><circle class="stroke dim" cx="76" cy="122" r="14"/><circle class="stroke dim" cx="153" cy="78" r="12"/></svg>
+  <button class="symbol-button" type="button" data-reveal="2" aria-label="Reveal the Plot Twist scene" aria-pressed="false"></button></div>
+  <div class="eyebrow">CHAPTER THREE</div><h2 id="title2">The Plot Twist</h2><p class="description">All the years before this. All the things that happened. And somehow, here we are.</p><p class="hint">SOME STORIES TAKE THEIR TIME GETTING HERE.</p>
+  <div class="reveal" id="reveal2" aria-live="polite"><div class="reveal-label">A THING I LIKE ABOUT US</div><p class="reveal-text">If someone had told me back then, I don't think I would have believed them.</p></div>
+  <div class="controls"><button class="action" type="button" data-next="3" disabled>Next scene ↗</button><button class="skip" type="button" data-skip="3">Skip scene</button></div>
+</div></section>
+
+<section class="screen scene" id="scene3" aria-labelledby="title3"><div class="inner">
+  <div class="number">SCENE IV · 04 / 04</div><div class="symbol-stage">
+  <svg class="symbol-svg" viewBox="0 0 240 240" aria-hidden="true"><circle class="stroke dim" cx="120" cy="120" r="76" stroke-dasharray="2 8"/><path class="stroke" d="M120 44 A76 76 0 0 1 190 149" stroke-dasharray="150"><animate attributeName="stroke-dashoffset" values="150;0;150" dur="7s" repeatCount="indefinite"/></path><circle class="dot glow" cx="120" cy="120" r="5"><animate attributeName="r" values="4;7;4" dur="3s" repeatCount="indefinite"/></circle><circle class="dot" cx="190" cy="149" r="4"/><path class="stroke dim" d="M120 120 L165 82 M120 120 L80 160 M120 120 L99 68"/><circle class="dot" cx="165" cy="82" r="2.5"/><circle class="dot" cx="80" cy="160" r="2.5"/><circle class="dot" cx="99" cy="68" r="2.5"/></svg>
+  <button class="symbol-button" type="button" data-reveal="3" aria-label="Reveal the Unwritten Scene" aria-pressed="false"></button></div>
+  <div class="eyebrow">CHAPTER FOUR</div><h2 id="title3">The Unwritten Scene</h2><p class="description">We're still learning about each other. There are conversations we haven't had and memories that don't exist yet.</p><p class="hint">THE STORY ISN'T FINISHED. NOT EVEN CLOSE.</p>
+  <div class="reveal" id="reveal3" aria-live="polite"><div class="reveal-label">A THING I LIKE ABOUT US</div><p class="reveal-text">I think this is my favorite part. We haven't seen what happens next.</p></div>
+  <div class="controls"><button class="action" type="button" data-next="end" disabled>Watch the ending ↗</button><button class="skip" type="button" data-skip="end">Skip scene</button></div>
+</div></section>
+
+<section class="screen ending" id="ending" aria-labelledby="endingTitle"><div>
+  <svg class="end-symbol" viewBox="0 0 260 260" role="img" aria-label="An unfinished constellation"><circle cx="130" cy="130" r="95" fill="none" stroke="rgba(230,227,240,.15)" stroke-dasharray="2 8"><animate attributeName="r" values="92;98;92" dur="7s" repeatCount="indefinite"/></circle><path d="M45 152 L85 91 L129 121 L178 63 L216 113" fill="none" stroke="#777581" stroke-width="1.2" stroke-dasharray="3 7"/><path d="M45 152 L85 91 L129 121 L178 63" fill="none" stroke="#e9e6f1" stroke-width="1.4" stroke-dasharray="220"><animate attributeName="stroke-dashoffset" from="220" to="0" dur="4s" fill="freeze"/></path><circle cx="45" cy="152" r="3" fill="#f3f0f8"/><circle cx="85" cy="91" r="5" fill="#f3f0f8" filter="drop-shadow(0 0 5px #ddd)"/><circle cx="129" cy="121" r="4" fill="#f3f0f8"/><circle cx="178" cy="63" r="5" fill="#f3f0f8" filter="drop-shadow(0 0 5px #ddd)"/><circle cx="216" cy="113" r="3" fill="#f3f0f8"/><path d="M178 63 L209 40" stroke="#777581" stroke-width="1" stroke-dasharray="2 6"/><circle cx="209" cy="40" r="2" fill="#f3f0f8"><animate attributeName="r" values="1.5;3.5;1.5" dur="3s" repeatCount="indefinite"/></circle></svg>
+  <div class="eyebrow">END OF CURRENT FOOTAGE</div><h2 id="endingTitle">I don't know what every scene after this will look like.</h2>
+  <p class="end-copy">But I know I'd like you to be in them.<br><br>The next scene hasn't been written yet.<br>And honestly, I don't want to spoil it.</p>
+  <div class="credits">STORY IN PROGRESS<br>NO FINAL CUT YET</div><button class="action" id="continueButton" type="button">Continue the story ↗</button>
+</div></section>
+</main>
+<div class="timeline-wrap" id="timelineWrap" hidden><div class="timeline-labels"><span id="timelineLeft">CURRENT SCENE</span><span id="timelineRight">00% COMPLETE</span></div><div class="timeline" id="timelineBar" role="progressbar" aria-label="Film progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fill" id="timelineFill"></div></div></div>
 
 <script>
+(() => {
+  "use strict";
 
-const editableText = {
+  // EDIT THESE LINES to personalize the page. Keep the quotation marks.
+  const scenes = [
+    {title:"The Comedy", description:"The teasing. The jokes. The conversations that somehow make absolutely no sense.", hint:"SOME OF MY FAVORITE MOMENTS ARE THE SILLY ONES.", reveal:"Somehow, you make being ridiculous feel like one of my favorite things."},
+    {title:"The Quiet Parts", description:"The moments when we don't have to make everything exciting. Sometimes being there is enough.", hint:"NOT EVERY MOMENT NEEDS TO BE LOUD TO MATTER.", reveal:"I like that not every moment has to become a memory for it to matter."},
+    {title:"The Plot Twist", description:"All the years before this. All the things that happened. And somehow, here we are.", hint:"SOME STORIES TAKE THEIR TIME GETTING HERE.", reveal:"If someone had told me back then, I don't think I would have believed them."},
+    {title:"The Unwritten Scene", description:"We're still learning about each other. There are conversations we haven't had and memories that don't exist yet.", hint:"THE STORY ISN'T FINISHED. NOT EVEN CLOSE.", reveal:"I think this is my favorite part. We haven't seen what happens next."}
+  ];
 
-    introTitle:
-        "Things I Like About Us",
+  const intro = document.getElementById("intro");
+  const ending = document.getElementById("ending");
+  const timelineWrap = document.getElementById("timelineWrap");
+  const timelineFill = document.getElementById("timelineFill");
+  const timelineBar = document.getElementById("timelineBar");
+  const timelineLeft = document.getElementById("timelineLeft");
+  const timelineRight = document.getElementById("timelineRight");
+  const topLeft = document.getElementById("topLeft");
+  const flash = document.getElementById("flash");
+  const sceneElements = scenes.map((_, i) => document.getElementById(`scene${i}`));
+  const visited = new Set();
+  let started = false;
 
-    introText:
-        "There are things I like about you.<br><br>And then there are things I only like because they're ours. This is stuff I like about US",
+  function flashFrame() {
+    flash.classList.remove("play");
+    void flash.offsetWidth;
+    flash.classList.add("play");
+  }
 
+  function updateProgress(progress, label) {
+    const value = Math.max(0, Math.min(100, progress));
+    timelineFill.style.width = `${value}%`;
+    timelineBar.setAttribute("aria-valuenow", String(Math.round(value)));
+    timelineLeft.textContent = label;
+    timelineRight.textContent = `${String(Math.round(value)).padStart(2, "0")}% COMPLETE`;
+  }
 
-    instruction:
-        "Choose two stars that belong together.",
+  function revealScene(index) {
+    const panel = document.getElementById(`reveal${index}`);
+    const symbolButton = document.querySelector(`[data-reveal="${index}"]`);
+    const nextButton = sceneElements[index].querySelector("[data-next]");
+    if (!panel || !symbolButton || !nextButton) return;
+    panel.classList.add("visible");
+    symbolButton.classList.add("revealed");
+    symbolButton.setAttribute("aria-pressed", "true");
+    nextButton.disabled = false;
+    visited.add(index);
+    updateProgress((visited.size / scenes.length) * 88, `SCENE ${index + 1} / ${scenes.length}`);
+  }
 
+  function showScene(target) {
+    if (target === "end") {
+      sceneElements.forEach(el => el.classList.remove("active"));
+      ending.classList.add("active");
+      topLeft.textContent = "END OF CURRENT FOOTAGE";
+      updateProgress(100, "THE STORY CONTINUES");
+    } else {
+      if (!Number.isInteger(target) || target < 0 || target >= scenes.length) return;
+      intro.style.display = "none";
+      ending.classList.remove("active");
+      sceneElements.forEach((el, i) => el.classList.toggle("active", i === target));
+      topLeft.textContent = `SCENE ${String(target + 1).padStart(2, "0")} · ${scenes[target].title.toUpperCase()}`;
+      updateProgress((visited.size / scenes.length) * 88, `SCENE ${target + 1} / ${scenes.length}`);
+    }
+    flashFrame();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
 
-    pairs: [
+  document.getElementById("playButton").addEventListener("click", () => {
+    if (started) return;
+    started = true;
+    timelineWrap.hidden = false;
+    showScene(0);
+  });
 
-        {
-            title: "The way we tease each other",
+  document.querySelectorAll("[data-reveal]").forEach(button => {
+    button.addEventListener("click", () => {
+      const index = Number(button.dataset.reveal);
+      if (!Number.isInteger(index) || index < 0 || index >= scenes.length) return;
+      revealScene(index);
+      flashFrame();
+    });
+  });
 
-            text:
-                "I LOVE IT SO MUCHHH i love the dynamic so much and it just makes me so happy how we can still be ourselves even with the relationship label! To be fair, if we ever started dating I wouldn't want something purely romantic as much as I like it...I wanna be your best friend AND your girlfriend!"
-        },
+  document.querySelectorAll("[data-next]").forEach(button => {
+    button.addEventListener("click", () => {
+      if (button.disabled) return;
+      const raw = button.dataset.next;
+      showScene(raw === "end" ? "end" : Number(raw));
+    });
+  });
 
-        {
-            title: "How comfortable we can be",
+  document.querySelectorAll("[data-skip]").forEach(button => {
+    button.addEventListener("click", () => {
+      const raw = button.dataset.skip;
+      showScene(raw === "end" ? "end" : Number(raw));
+    });
+  });
 
-            text:
-                "I like that we don't always have to be doing something. Sometimes just being around you is enough."
-        },
+  document.getElementById("continueButton").addEventListener("click", () => {
+    window.location.href = "things-id-never-admit.html";
+  });
 
-        {
-            title: "The way we make each other laugh",
-
-            text:
-                "Some of our conversations make absolutely no sense, and somehow those are some of my favorites."
-        },
-
-        {
-            title: "How we're taking things slowly",
-
-            text:
-                "I like that we don't have to rush into anything. We can just figure this out together."
-        }
-
-    ],
-
-
-    finalSmall:
-        "CONSTELLATION COMPLETE",
-
-    finalTitle:
-        "Maybe this is my favorite part.",
-
-    finalText:
-        "I don't know exactly where all of this goes.<br><br>But I really like where we are right now.<br><br>And I really like that whatever this becomes, it's ours."
-
-};
-
+  // Scene copy is centralized above for easy editing. This keeps displayed copy consistent.
+  scenes.forEach((scene, i) => {
+    const title = document.getElementById(`title${i}`);
+    const section = document.getElementById(`scene${i}`);
+    const description = section.querySelector(".description");
+    const hint = section.querySelector(".hint");
+    const revealText = section.querySelector(".reveal-text");
+    if (title) title.textContent = scene.title;
+    if (description) description.textContent = scene.description;
+    if (hint) hint.textContent = scene.hint;
+    if (revealText) revealText.textContent = scene.reveal;
+  });
+  updateProgress(0, "READY WHEN YOU ARE");
+})();
 </script>
-
-
-<!-- =====================================================
-     INTRO SCREEN
-===================================================== -->
-
-<section id="introScreen">
-
-    <div class="intro-container">
-
-        <div class="intro-title">
-            <script>
-                document.write(editableText.introTitle);
-            </script>
-        </div>
-
-        <div class="intro-text">
-            <script>
-                document.write(editableText.introText);
-            </script>
-        </div>
-
-        <div
-            class="intro-star"
-            onclick="startConstellation()"
-        >
-            ✦
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     CONSTELLATION SCREEN
-===================================================== -->
-
-<section id="constellationScreen">
-
-    <div class="constellation-header">
-
-        <div class="constellation-title">
-            <script>
-                document.write(editableText.introTitle);
-            </script>
-        </div>
-
-        <div class="constellation-subtitle">
-            Every pair of stars hides something I like about us.
-        </div>
-
-        <div
-            class="progress"
-            id="progress"
-        >
-            0 / 4 CONSTELLATIONS
-        </div>
-
-    </div>
-
-
-    <div class="constellation-area" id="constellationArea">
-
-        <!--
-            The lines are drawn inside this SVG.
-            They begin invisible and animate outward.
-        -->
-
-        <svg
-            id="constellationLines"
-            viewBox="0 0 750 500"
-            preserveAspectRatio="none"
-        >
-
-        </svg>
-
-
-        <!-- PAIR 1 -->
-
-        <button
-            class="constellation-star star-1"
-            data-star="1"
-            aria-label="Constellation star 1"
-            onclick="selectStar(1)"
-        >
-            ✦
-        </button>
-
-        <button
-            class="constellation-star star-2"
-            data-star="2"
-            aria-label="Constellation star 2"
-            onclick="selectStar(2)"
-        >
-            ✦
-        </button>
-
-
-        <!-- PAIR 2 -->
-
-        <button
-            class="constellation-star star-3"
-            data-star="3"
-            aria-label="Constellation star 3"
-            onclick="selectStar(3)"
-        >
-            ✦
-        </button>
-
-        <button
-            class="constellation-star star-4"
-            data-star="4"
-            aria-label="Constellation star 4"
-            onclick="selectStar(4)"
-        >
-            ✦
-        </button>
-
-
-        <!-- PAIR 3 -->
-
-        <button
-            class="constellation-star star-5"
-            data-star="5"
-            aria-label="Constellation star 5"
-            onclick="selectStar(5)"
-        >
-            ✦
-        </button>
-
-        <button
-            class="constellation-star star-6"
-            data-star="6"
-            aria-label="Constellation star 6"
-            onclick="selectStar(6)"
-        >
-            ✦
-        </button>
-
-
-        <!-- PAIR 4 -->
-
-        <button
-            class="constellation-star star-7"
-            data-star="7"
-            aria-label="Constellation star 7"
-            onclick="selectStar(7)"
-        >
-            ✦
-        </button>
-
-        <button
-            class="constellation-star star-8"
-            data-star="8"
-            aria-label="Constellation star 8"
-            onclick="selectStar(8)"
-        >
-            ✦
-        </button>
-
-    </div>
-
-
-    <div
-        class="instruction"
-        id="instruction"
-    >
-        <script>
-            document.write(editableText.instruction);
-        </script>
-    </div>
-
-
-    <div id="messageBox">
-
-        <div class="message-label">
-            SOMETHING I LIKE
-        </div>
-
-        <div
-            class="message-title"
-            id="messageTitle"
-        >
-        </div>
-
-        <div
-            class="message-text"
-            id="messageText"
-        >
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     FINAL SCREEN
-===================================================== -->
-
-<section id="finalScreen">
-
-    <div class="final-container">
-
-        <div class="final-small">
-            <script>
-                document.write(editableText.finalSmall);
-            </script>
-        </div>
-
-        <div class="final-title">
-            <script>
-                document.write(editableText.finalTitle);
-            </script>
-        </div>
-
-        <div class="final-text">
-            <script>
-                document.write(editableText.finalText);
-            </script>
-        </div>
-
-        <a
-            class="final-star"
-            href="things-id-never-admit.html"
-        >
-            ✦
-        </a>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     JAVASCRIPT
-     
-     YOU PROBABLY DON'T NEED TO CHANGE ANYTHING BELOW.
-===================================================== -->
-
-<script>
-
-let selectedStar = null;
-
-let completedPairs = 0;
-
-const pairConnections = [
-
-    {
-        star1: 1,
-        star2: 2,
-        pairIndex: 0
-    },
-
-    {
-        star1: 3,
-        star2: 4,
-        pairIndex: 1
-    },
-
-    {
-        star1: 5,
-        star2: 6,
-        pairIndex: 2
-    },
-
-    {
-        star1: 7,
-        star2: 8,
-        pairIndex: 3
-    }
-
-];
-
-
-/* =========================================
-   START
-========================================= */
-
-function startConstellation() {
-
-    document.getElementById("introScreen").style.display = "none";
-
-    document.getElementById("constellationScreen").style.display = "block";
-
-}
-
-
-/* =========================================
-   STAR CLICK
-========================================= */
-
-function selectStar(starNumber) {
-
-    const star = document.querySelector(
-        '[data-star="' + starNumber + '"]'
-    );
-
-    /*
-        If this star already belongs to a completed
-        constellation, don't let it be selected again.
-    */
-
-    if (star.classList.contains("connected")) {
-        return;
-    }
-
-
-    /*
-        If no star has been selected yet,
-        select this one.
-    */
-
-    if (selectedStar === null) {
-
-        selectedStar = starNumber;
-
-        star.classList.add("selected");
-
-        document.getElementById("instruction").textContent =
-            "Now choose the star that belongs with it.";
-
-        return;
-
-    }
-
-
-    /*
-        Clicking the same star again cancels selection.
-    */
-
-    if (selectedStar === starNumber) {
-
-        star.classList.remove("selected");
-
-        selectedStar = null;
-
-        document.getElementById("instruction").textContent =
-            editableText.instruction;
-
-        return;
-
-    }
-
-
-    /*
-        Check whether the two stars are actually
-        a matching pair.
-    */
-
-    const matchingPair = pairConnections.find(function(pair) {
-
-        return (
-            (pair.star1 === selectedStar &&
-             pair.star2 === starNumber)
-
-            ||
-
-            (pair.star1 === starNumber &&
-             pair.star2 === selectedStar)
-        );
-
-    });
-
-
-    /*
-        If they don't belong together,
-        briefly show a message.
-    */
-
-    if (!matchingPair) {
-
-        star.style.transform =
-            "translate(-50%, -50%) scale(0.8)";
-
-        setTimeout(function() {
-
-            star.style.transform =
-                "translate(-50%, -50%)";
-
-        }, 250);
-
-        document.getElementById("instruction").textContent =
-            "Not quite. Try another star.";
-
-        return;
-
-    }
-
-
-    /*
-        Correct pair!
-    */
-
-    connectStars(
-        selectedStar,
-        starNumber,
-        matchingPair.pairIndex
-    );
-
-}
-
-
-/* =========================================
-   CONNECT TWO STARS
-========================================= */
-
-function connectStars(starOneNumber, starTwoNumber, pairIndex) {
-
-    const starOne = document.querySelector(
-        '[data-star="' + starOneNumber + '"]'
-    );
-
-    const starTwo = document.querySelector(
-        '[data-star="' + starTwoNumber + '"]'
-    );
-
-
-    starOne.classList.remove("selected");
-
-    starOne.classList.add("connected");
-
-    starTwo.classList.add("connected");
-
-
-    /*
-        Create the animated line.
-    */
-
-    const svg = document.getElementById(
-        "constellationLines"
-    );
-
-    const pointOne = getStarPosition(starOne);
-
-    const pointTwo = getStarPosition(starTwo);
-
-
-    const line = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "line"
-    );
-
-    line.setAttribute(
-        "x1",
-        pointOne.x
-    );
-
-    line.setAttribute(
-        "y1",
-        pointOne.y
-    );
-
-    line.setAttribute(
-        "x2",
-        pointTwo.x
-    );
-
-    line.setAttribute(
-        "y2",
-        pointTwo.y
-    );
-
-    line.classList.add(
-        "constellation-line"
-    );
-
-
-    svg.appendChild(line);
-
-
-    /*
-        Wait one frame so the browser sees
-        the starting state before animating.
-    */
-
-    requestAnimationFrame(function() {
-
-        line.classList.add("draw");
-
-    });
-
-
-    completedPairs++;
-
-    document.getElementById("progress").textContent =
-        completedPairs +
-        " / " +
-        editableText.pairs.length +
-        " CONSTELLATIONS";
-
-
-    selectedStar = null;
-
-
-    /*
-        Show the corresponding message.
-    */
-
-    showMessage(pairIndex);
-
-
-    /*
-        Update instructions.
-    */
-
-    if (
-        completedPairs <
-        editableText.pairs.length
-    ) {
-
-        document.getElementById("instruction").textContent =
-            "Another constellation is waiting.";
-
-    }
-
-
-    /*
-        After all four are complete,
-        finish the constellation.
-    */
-
-    if (
-        completedPairs ===
-        editableText.pairs.length
-    ) {
-
-        setTimeout(function() {
-
-            finishConstellation();
-
-        }, 3500);
-
-    }
-
-}
-
-
-/* =========================================
-   GET STAR POSITION
-========================================= */
-
-function getStarPosition(star) {
-
-    const area =
-        document.getElementById("constellationArea");
-
-    const areaRect =
-        area.getBoundingClientRect();
-
-    const starRect =
-        star.getBoundingClientRect();
-
-
-    return {
-
-        x:
-            (
-                starRect.left +
-                starRect.width / 2 -
-                areaRect.left
-            )
-            *
-            (750 / areaRect.width),
-
-        y:
-            (
-                starRect.top +
-                starRect.height / 2 -
-                areaRect.top
-            )
-            *
-            (500 / areaRect.height)
-
-    };
-
-}
-
-
-/* =========================================
-   SHOW MESSAGE
-========================================= */
-
-function showMessage(pairIndex) {
-
-    const pair =
-        editableText.pairs[pairIndex];
-
-
-    const messageBox =
-        document.getElementById("messageBox");
-
-
-    const title =
-        document.getElementById("messageTitle");
-
-    const text =
-        document.getElementById("messageText");
-
-
-    messageBox.classList.remove("visible");
-
-
-    setTimeout(function() {
-
-        title.textContent =
-            pair.title;
-
-        text.innerHTML =
-            pair.text;
-
-        messageBox.classList.add("visible");
-
-    }, 150);
-
-}
-
-
-/* =========================================
-   FINISH
-========================================= */
-
-function finishConstellation() {
-
-    document.getElementById("instruction").textContent =
-        "The constellation is complete.";
-
-    /*
-        Make every connected star gently glow.
-    */
-
-    const connectedStars =
-        document.querySelectorAll(
-            ".constellation-star.connected"
-        );
-
-
-    connectedStars.forEach(function(star, index) {
-
-        setTimeout(function() {
-
-            star.style.textShadow =
-                "0 0 8px white, 0 0 20px white, 0 0 35px white";
-
-        }, index * 100);
-
-    });
-
-
-    /*
-        Give the user a moment to see the
-        finished constellation before moving on.
-    */
-
-    setTimeout(function() {
-
-        document.getElementById(
-            "constellationScreen"
-        ).style.display = "none";
-
-
-        document.getElementById(
-            "finalScreen"
-        ).style.display = "flex";
-
-    }, 4500);
-
-}
-
-</script>
-
 </body>
 </html>
