@@ -8,13 +8,6 @@
 <title>One Last Thing</title>
 
 <style>
-/* =========================================================
-   ONE LAST THING
-   A little universe made for one person.
-
-   EDITABLE TEXT:
-   Search for "EDITABLE TEXT" in the script near the bottom.
-   ========================================================= */
 
 :root {
     --night: #050609;
@@ -65,9 +58,7 @@ a:focus-visible {
     color: #050609;
 }
 
-/* =========================================================
-   THE SKY
-   ========================================================= */
+
 
 #sky {
     position: fixed;
@@ -135,9 +126,7 @@ body.awake .sky-wash {
     100% { transform: translate(-1%, -1%); }
 }
 
-/* =========================================================
-   INTRO SCREEN
-   ========================================================= */
+
 
 #opening {
     position: fixed;
@@ -291,10 +280,6 @@ body.awake .sky-wash {
     animation-delay: 2.8s;
 }
 
-/* =========================================================
-   SHARED SCENE STYLING
-   ========================================================= */
-
 main {
     position: relative;
     z-index: 4;
@@ -413,9 +398,7 @@ body.awake main {
     transform: translateY(5px);
 }
 
-/* =========================================================
-   SCENE 1: THE MOON
-   ========================================================= */
+
 
 #hero {
     overflow: hidden;
@@ -527,9 +510,7 @@ body.awake main {
     margin-top: 26px;
 }
 
-/* =========================================================
-   SCENE 2: CONSTELLATION
-   ========================================================= */
+
 
 #constellation-section {
     overflow: hidden;
@@ -601,9 +582,7 @@ body.awake main {
     opacity: 1;
 }
 
-/* =========================================================
-   SCENE 3: THE LETTER
-   ========================================================= */
+
 
 #letter-section {
     padding-top: 150px;
@@ -673,9 +652,7 @@ body.awake main {
     opacity: 1;
 }
 
-/* =========================================================
-   SCENE 4: LIVE RELATIONSHIP CLOCK
-   ========================================================= */
+
 
 #time-section {
     overflow: hidden;
@@ -799,9 +776,7 @@ body.awake main {
     line-height: 2;
 }
 
-/* =========================================================
-   SCENE 5: THE FINAL WORDS
-   ========================================================= */
+
 
 #last-scene {
     min-height: 115svh;
@@ -935,9 +910,6 @@ body.awake main {
     letter-spacing: .22em;
 }
 
-/* =========================================================
-   MOTION
-   ========================================================= */
 
 @keyframes fadeRise {
     from {
@@ -995,9 +967,7 @@ body.awake main {
     }
 }
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
+
 
 @media (max-width: 600px) {
     .scene {
@@ -1064,7 +1034,7 @@ body.awake main {
     }
 }
 
-/* Accessibility: honor reduced-motion preferences */
+
 
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -1086,9 +1056,6 @@ body.awake main {
 <div class="vignette" aria-hidden="true"></div>
 <div id="grain" aria-hidden="true"></div>
 
-<!-- =======================================================
-     OPENING
-     ======================================================= -->
 
 <div id="opening">
     <div class="opening-orbit" aria-hidden="true"></div>
@@ -1120,9 +1087,7 @@ body.awake main {
 
 <main>
 
-    <!-- ===================================================
-         SCENE 1: THE MOON
-         =================================================== -->
+
 
     <section class="scene" id="hero">
         <div class="scene-content">
@@ -1159,9 +1124,7 @@ body.awake main {
         </div>
     </section>
 
-    <!-- ===================================================
-         SCENE 2: CONSTELLATION
-         =================================================== -->
+
 
     <section class="scene" id="constellation-section">
         <div class="scene-content">
@@ -1223,10 +1186,7 @@ body.awake main {
         </div>
     </section>
 
-    <!-- ===================================================
-         SCENE 3: THE LETTER
-         =================================================== -->
-
+  
     <section class="scene" id="letter-section">
         <div class="scene-content">
 
@@ -1262,9 +1222,7 @@ body.awake main {
         </div>
     </section>
 
-    <!-- ===================================================
-         SCENE 4: LIVE RELATIONSHIP TIMER
-         =================================================== -->
+
 
     <section class="scene" id="time-section">
         <div class="clock-aura" aria-hidden="true"></div>
@@ -1327,9 +1285,7 @@ body.awake main {
         </div>
     </section>
 
-    <!-- ===================================================
-         SCENE 5: THE LAST WORDS
-         =================================================== -->
+
 
     <section class="scene" id="last-scene">
         <div class="last-light" aria-hidden="true"></div>
@@ -1363,13 +1319,7 @@ body.awake main {
 </main>
 
 <script>
-/* =========================================================
-   EDITABLE TEXT
-   Change the words inside quotation marks.
-   Keep the commas and quotation marks around each item.
 
-   The timer's start date is set separately below.
-   ========================================================= */
 
 const editableText = {
 
@@ -1422,21 +1372,10 @@ const editableText = {
 };
 
 
-/* =========================================================
-   RELATIONSHIP START TIME
-   September 25, 2026 at 8:08 AM Pacific Daylight Time.
-
-   -07:00 is the Pacific offset on that date.
-   Using a fixed timestamp means the start moment stays exact.
-   The browser compares it with the current real-world time.
-   ========================================================= */
 
 const relationshipStart = new Date("2026-09-25T08:08:55-07:00").getTime();
 
 
-/* =========================================================
-   APPLY EDITABLE TEXT
-   ========================================================= */
 
 function setText(id, value) {
     const element = document.getElementById(id);
@@ -1484,13 +1423,6 @@ editableText.letterParagraphs.forEach((paragraph) => {
     letterBody.appendChild(p);
 });
 
-
-/* =========================================================
-   LIVE RELATIONSHIP TIMER
-   Updates every second.
-   Shows total completed days, then remaining hours,
-   minutes, and seconds.
-   ========================================================= */
 
 const dayElement = document.getElementById("days");
 const hoursElement = document.getElementById("hours");
@@ -1541,10 +1473,6 @@ updateRelationshipClock();
 setInterval(updateRelationshipClock, 1000);
 
 
-/* =========================================================
-   CINEMATIC OPENING
-   ========================================================= */
-
 const opening = document.getElementById("opening");
 const openButton = document.getElementById("open-button");
 
@@ -1568,10 +1496,6 @@ openButton.addEventListener("click", () => {
 });
 
 
-/* =========================================================
-   SCROLL REVEALS
-   Each scene wakes up as it enters the viewport.
-   ========================================================= */
 
 const scenes = document.querySelectorAll(".scene");
 
@@ -1588,10 +1512,6 @@ const sceneObserver = new IntersectionObserver((entries) => {
 scenes.forEach((scene) => sceneObserver.observe(scene));
 
 
-/* =========================================================
-   CONTINUE BUTTONS
-   Smoothly scroll to the next scene.
-   ========================================================= */
 
 document.querySelectorAll("[data-next]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -1608,11 +1528,6 @@ document.querySelectorAll("[data-next]").forEach((button) => {
 });
 
 
-/* =========================================================
-   CANVAS STARFIELD
-   Hundreds of tiny stars, slow drifting dust, occasional
-   shooting stars, and a subtle depth effect.
-   ========================================================= */
 
 const canvas = document.getElementById("sky");
 const ctx = canvas.getContext("2d");
@@ -1827,11 +1742,6 @@ if (reducedMotion) {
 }
 
 
-/* =========================================================
-   END
-   Everything runs locally in the browser.
-   No libraries, accounts, or external assets required.
-   ========================================================= */
 </script>
 
 </body>
