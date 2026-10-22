@@ -331,11 +331,7 @@ h1 {
 </div>
 
 <script>
-/* ==========================================================
-   EASY EDIT SECTION
-   Change the title, message, caption, and note for each memory.
-   Keep the quotation marks and commas in place.
-   ========================================================== */
+
 const memories = [
   {
     title: "Dancing/kissing in the rain",
@@ -393,7 +389,7 @@ const ending = {
   caption: "To be continued...",
   note: "The best parts aren't written yet so WAIT FOR IT"
 };
-/* ======================= END EDIT SECTION ================== */
+
 
 (() => {
   "use strict";
@@ -410,7 +406,6 @@ const ending = {
   const statusMessage = document.getElementById("statusMessage");
   const starscape = document.getElementById("starscape");
 
-  // -1 is the cover, 0–7 are memories, 8 is the ending.
   let currentPage = -1;
   let isTurning = false;
   let turnFallback = null;
